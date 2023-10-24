@@ -1,0 +1,3 @@
+[submodule "athaeck-base-hooks"]
+	path = athaeck-base-hooks
+	url = git@github.com:NickHaecker/athaeck-base-hooks.git
