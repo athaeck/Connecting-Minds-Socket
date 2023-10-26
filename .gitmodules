@@ -4,3 +4,5 @@
 [submodule "Connecting-Minds-Data-Types"]
 	path = Connecting-Minds-Data-Types
 	url = https://github.com/NickHaecker/Connecting-Minds-Data-Types.git
+[submodule "athaeck-websocket-express-base"]
+	url = https://github.com/NickHaecker/athaeck-websocket-express-base.git
