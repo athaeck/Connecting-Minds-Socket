@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "workspaces": [
     "athaeck-websocket-express-base",
-    "athaeck-websocket-express-base/athaeck-express-base"
+    "athaeck-websocket-express-base/athaeck-express-base",
+    "athaeck-express-nosql-extension"
   ],
   "scripts": {
     "start:dev": "nodemon dist/index.js",

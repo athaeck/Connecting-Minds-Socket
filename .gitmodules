@@ -6,3 +6,6 @@
 	url = https://github.com/NickHaecker/Connecting-Minds-Data-Types.git
 [submodule "athaeck-websocket-express-base"]
 	url = https://github.com/NickHaecker/athaeck-websocket-express-base.git
+[submodule "athaeck-express-nosql-extension"]
+	path = athaeck-express-nosql-extension
+	url = https://github.com/NickHaecker/athaeck-express-nosql-extension.git
