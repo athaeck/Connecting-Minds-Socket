@@ -1,8 +1,6 @@
 import { MongoClient, Db } from "mongodb";
 import config from "config";
 import { BaseDB } from "../../../athaeck-express-nosql-extension/base/db/types";
-
-
 class MongoDB extends BaseDB {
     private _url: string
     constructor() {

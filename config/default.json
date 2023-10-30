@@ -10,9 +10,7 @@
     "listener":[],
     "noSQL":{
         "mongoDB":{
-        "url": "",
-        "username": "",
-        "password": ""
+        "url": ""
         }
     }
 }
