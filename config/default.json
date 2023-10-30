@@ -1,9 +1,11 @@
 {
     "extensions":{
         "mongoDB":[
-            ""
+           
         ]
     },
-    "adapter":[],
+    "adapter":[
+        "mongoDB"
+    ],
     "listener":[]
 }

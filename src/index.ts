@@ -5,8 +5,8 @@ import config from "config"
 
 
 
-export class ConnectingMindsSocketListenerFactory extends WebSocketListenerFactory{
-    constructor(root:string){
+export class ConnectingMindsSocketListenerFactory extends WebSocketListenerFactory {
+    constructor(root: string) {
         super(root)
     }
 
@@ -16,9 +16,9 @@ export class ConnectingMindsSocketListenerFactory extends WebSocketListenerFacto
         ]
 
         const refs: string[] = config.get("listener") as string[]
-        for(const ref of refs){
+        for (const ref of refs) {
             const listenerRef = require(`${this.rootFolder + ref}`)
-            if(!listenerRef){
+            if (!listenerRef) {
                 break;
             }
             listener.push(listenerRef)
@@ -28,18 +28,19 @@ export class ConnectingMindsSocketListenerFactory extends WebSocketListenerFacto
     }
 }
 
-export class ConnectingMindsServerAdapterFactory extends BaseExpressApiFactory{
-    constructor(root:string){
+export class ConnectingMindsServerAdapterFactory extends BaseExpressApiFactory {
+    constructor(root: string) {
         super(root)
     }
 
     protected CreateAdapter(): void {
-        const adapter:any[]=[]
+        const adapter: any[] = []
 
         const refs: string[] = config.get("adapter") as string[]
-        for(const ref of refs){
+        for (const ref of refs) {
+            console.log(this.rootFolder + ref)
             const adpterRef = require(`${this.rootFolder + ref}`)
-            if(!adpterRef){
+            if (!adpterRef) {
                 break;
             }
             adapter.push(adpterRef)
