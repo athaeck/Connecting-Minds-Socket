@@ -12,7 +12,6 @@ export class ConnectingMindsMongoDBRouteFactory extends BaseExpressRouteFactory 
         const extensions: any = config.get("extensions")
         const extensionRoutes = extensions["mongoDB"]
         for (const extension of extensionRoutes) {
-            console.log("--------------------", this.rootFolder + extension, "-------------------------------")
             const Route = require(`${this.rootFolder + extension}`)
             if (!Route) {
                 break;

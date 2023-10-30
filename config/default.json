@@ -7,5 +7,12 @@
     "adapter":[
         "mongoDB"
     ],
-    "listener":[]
+    "listener":[],
+    "noSQL":{
+        "mongoDB":{
+        "url": "",
+        "username": "",
+        "password": ""
+        }
+    }
 }
