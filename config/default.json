@@ -1,16 +1,14 @@
 {
-    "extensions":{
-        "mongoDB":[
-           
-        ]
+    "extensions": {
+        "mongoDB": []
     },
-    "adapter":[
+    "adapter": [
         "mongoDB"
     ],
-    "listener":[],
-    "noSQL":{
-        "mongoDB":{
-        "url": ""
+    "listener": [],
+    "noSQL": {
+        "mongoDB": {
+            "url": "mongodb+srv://nickathaeck:<password>@connecting-minds.vw1wjia.mongodb.net/?retryWrites=true&w=majority"
         }
     }
 }

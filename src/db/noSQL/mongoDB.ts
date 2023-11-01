@@ -8,13 +8,16 @@ class MongoDB extends BaseDB {
         console.log("Init MongoDB Adapter")
         const nosql: any = config.get("noSQL");
         this.config = nosql["mongoDB"]
-        this._url = <string>this.config["url"];
+        const url: string = <string>this.config["url"];
+        this._url = url.replace("<password>", this.config.password)
+
         this.Connect();
     }
     public async Connect(): Promise<void> {
         if (this._url.length === 0) {
             return
         }
+
         this.client = await MongoClient.connect(this._url)
     }
     public async GetDB<T>(db: string): Promise<T | undefined> {
