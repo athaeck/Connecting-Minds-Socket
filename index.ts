@@ -1,4 +1,4 @@
-import WebSocket from "ws";
+import { WebSocket } from "ws";
 import { AddRoute, BaseExpressRoute } from "./athaeck-websocket-express-base/athaeck-express-base/base/express";
 import { BaseWebSocketExpressAdoon } from "./athaeck-websocket-express-base/base";
 import { WebSocketHooks } from "./athaeck-websocket-express-base/base/hooks";
@@ -41,13 +41,13 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     public get ConnectingMindsHooks() {
         return this._connectingMindsHooks
     }
-    public IsPlayerOne(socket: WebSocket.WebSocket): Boolean {
+    public IsPlayerOne(socket: WebSocket): Boolean {
         if (!this._playerOne) {
             return false
         }
         return this._playerOne.socket === socket
     }
-    public IsPlayerTwo(socket: WebSocket.WebSocket): Boolean {
+    public IsPlayerTwo(socket: WebSocket): Boolean {
         if (!this._playerTwo) {
             return false
         }
@@ -56,23 +56,43 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
 
 
     Init(webSocket: WebSocket, hooks: WebSocketHooks): void {
-        const connectingMindsHooks: ConnectingMindsHooks = <ConnectingMindsHooks>hooks
-        if (this.PlayerOne !== null && this.PlayerTwo !== null) {
-            return;
-        }
-        const player: Player = {
-            hooks: connectingMindsHooks,
-            socket: webSocket
-        }
-        if (this.PlayerOne === null) {
-            this._playerOne = player
-            return;
-        }
-        if (this.PlayerTwo === null) {
-            this._playerTwo = player
-            return
+        // const connectingMindsHooks: ConnectingMindsHooks = <ConnectingMindsHooks>hooks
+        // if (this.PlayerOne !== null && this.PlayerTwo !== null) {
+        //     return;
+        // }
+        // const player: Player = {
+        //     hooks: connectingMindsHooks,
+        //     socket: webSocket
+        // }
+        // if (this.PlayerOne === null) {
+        //     this._playerOne = player
+        //     return;
+        // }
+        // if (this.PlayerTwo === null) {
+        //     this._playerTwo = player
+        //     return
+        // }
+        // return connectingMindsHooks
+
+        // TODO: mal noch generalisierne in der Base, ob eine Connection eingeschränkt ist oder nicht und dass das im Child definiert wird
+        if(this.PlayerOne !== null && this.PlayerTwo !== null){
+            webSocket.close(500,"Too many users connected")
         }
     }
+
+    public TakePlayerOne(webSocket: WebSocket, hooks: ConnectingMindsHooks): void {
+        this._playerOne = {
+            socket: webSocket,
+            hooks
+        }
+    }
+    public TakePlayerTwo(webSocket: WebSocket, hooks: ConnectingMindsHooks): void {
+        this._playerTwo = {
+            socket: webSocket,
+            hooks
+        }
+    }
+
     protected CreateHooks(): WebSocketHooks {
         return new ConnectingMindsHooks()
     }
