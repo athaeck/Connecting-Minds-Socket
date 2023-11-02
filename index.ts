@@ -5,6 +5,7 @@ import { WebSocketHooks } from "./athaeck-websocket-express-base/base/hooks";
 import { ConnectingMindsServerAdapterFactory, ConnectingMindsSocketListenerFactory } from "./src";
 import bodyParser from "body-parser"
 import { Player } from "./Connecting-Minds-Data-Types/types";
+import { ConnectingMindsHooks } from "./src/hooks/connectingMindsHooks";
 
 
 
@@ -12,11 +13,13 @@ import { Player } from "./Connecting-Minds-Data-Types/types";
 
 
 export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
-    private _playerOne: Player
-    private _playerTwo: Player
+    private _playerOne: Player | null = null
+    private _playerTwo: Player | null = null
+    private _connectingMindsHooks: ConnectingMindsHooks
 
     constructor(port: number) {
         super(port)
+        this._connectingMindsHooks = new ConnectingMindsHooks()
         this.factory = new ConnectingMindsSocketListenerFactory("./listener/")
         this.initializeMiddleware()
         this.apiFactory = new ConnectingMindsServerAdapterFactory("./api/")
@@ -29,11 +32,14 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     public set PlayerTwo(player: Player) {
         this.PlayerTwo = player
     }
-    public get PlayerOne(): Player {
+    public get PlayerOne(): Player | null {
         return this._playerOne
     }
-    public get PlayerTwo(): Player {
+    public get PlayerTwo(): Player | null {
         return this._playerTwo
+    }
+    public get ConnectingMindsHooks() {
+        return this._connectingMindsHooks
     }
     public IsPlayerOne(socket: WebSocket.WebSocket): Boolean {
         if (!this._playerOne) {
@@ -50,10 +56,40 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
 
 
     Init(webSocket: WebSocket, hooks: WebSocketHooks): void {
-
+        const connectingMindsHooks: ConnectingMindsHooks = <ConnectingMindsHooks>hooks
+        if (this.PlayerOne !== null && this.PlayerTwo !== null) {
+            return;
+        }
+        const player: Player = {
+            hooks: connectingMindsHooks,
+            socket: webSocket
+        }
+        if (this.PlayerOne === null) {
+            this._playerOne = player
+            return;
+        }
+        if (this.PlayerTwo === null) {
+            this._playerTwo = player
+            return
+        }
+    }
+    protected CreateHooks(): WebSocketHooks {
+        return new ConnectingMindsHooks()
     }
     Disconnect(webSocket: WebSocket): WebSocketHooks | undefined {
-        return undefined
+        if (this.PlayerOne === null && this.PlayerTwo === null) {
+            return undefined
+        }
+        let player: Player | null = null
+        if (this.IsPlayerOne(webSocket)) {
+            player = this.PlayerOne
+            this._playerOne = null
+        }
+        if (this.IsPlayerTwo(webSocket)) {
+            player = this.PlayerTwo
+            this._playerTwo = null
+        }
+        return player?.hooks
     }
     AddRoute(route: BaseExpressRoute): void {
         this.app = AddRoute(this.app, route)

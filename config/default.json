@@ -5,7 +5,10 @@
     "adapter": [
         "mongoDB"
     ],
-    "listener": [],
+    "listener": [
+        "connectPlayerOne",
+        "connectPlayerTwo"
+    ],
     "noSQL": {
         "mongoDB": {
             "url": "mongodb+srv://nickathaeck:<password>@connecting-minds.vw1wjia.mongodb.net/?retryWrites=true&w=majority"

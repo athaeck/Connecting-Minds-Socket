@@ -38,7 +38,6 @@ export class ConnectingMindsServerAdapterFactory extends BaseExpressApiFactory {
 
         const refs: string[] = config.get("adapter") as string[]
         for (const ref of refs) {
-            console.log(this.rootFolder + ref)
             const adpterRef = require(`${this.rootFolder + ref}`)
             if (!adpterRef) {
                 break;

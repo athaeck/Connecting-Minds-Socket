@@ -1,6 +1,6 @@
-import { BaseHooks } from "../../athaeck-base-hooks";
+import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks";
 
 
-export class ConnectingMindsHooks extends BaseHooks{
+export class ConnectingMindsHooks extends WebSocketHooks{
     
 }
