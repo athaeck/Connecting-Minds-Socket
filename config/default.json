@@ -10,7 +10,8 @@
         "connectPlayerTwo",
         "disconnectPlayerOne",
         "disconnectPlayerTwo",
-        "placeItemListener"
+        "placeItemListener",
+        "testListener"
     ],
     "noSQL": {
         "mongoDB": {
