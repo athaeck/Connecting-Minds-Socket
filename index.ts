@@ -54,6 +54,13 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
         return this._playerTwo.socket === socket
     }
 
+    protected ValidateConnection(webSocket: WebSocket): boolean {
+        if (this.PlayerOne !== null && this.PlayerTwo !== null) {
+            return false
+        }
+        return true
+    }
+
 
     Init(webSocket: WebSocket, hooks: WebSocketHooks): void {
         // const connectingMindsHooks: ConnectingMindsHooks = <ConnectingMindsHooks>hooks
@@ -75,9 +82,9 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
         // return connectingMindsHooks
 
         // TODO: mal noch generalisierne in der Base, ob eine Connection eingeschränkt ist oder nicht und dass das im Child definiert wird
-        if(this.PlayerOne !== null && this.PlayerTwo !== null){
-            webSocket.close(500,"Too many users connected")
-        }
+        // if(this.PlayerOne !== null && this.PlayerTwo !== null){
+        //     webSocket.close(500,"Too many users connected")
+        // }
     }
 
     public TakePlayerOne(webSocket: WebSocket, hooks: ConnectingMindsHooks): void {
