@@ -18,8 +18,8 @@
             "url": "mongodb+srv://nickathaeck:<password>@connecting-minds.vw1wjia.mongodb.net/?retryWrites=true&w=majority"
         }
     },
-    "express":{
-        "useNetwork":true,
-        "port":3030
+    "express": {
+        "useNetwork": false,
+        "port": 3030
     }
 }
