@@ -11,14 +11,12 @@ import { Broadcast, ReceivedEvent } from "../../athaeck-websocket-express-base/b
 
 class TestListener extends BaseWebSocketListener {
     listenerKey: string;
-    private _application: ConnectingMindsSocket
 
     constructor(webSocketServer: BaseWebSocketExpressAdoon, webSocket: WebSocket, hooks: WebSocketHooks) {
         super(webSocketServer, webSocket, hooks)
     }
 
     protected Init(): void {
-        this._application = <ConnectingMindsSocket>this.webSocketServer
     }
     protected SetKey(): void {
         this.listenerKey = ConnectingMindsEvents.TEST
@@ -27,16 +25,9 @@ class TestListener extends BaseWebSocketListener {
 
     }
     protected listener(body: any): void {
-        // const hooks: ConnectingMindsHooks = <ConnectingMindsHooks>this.webSocketHooks
-        // this._application.TakePlayerOne(this.webSocket, hooks)
-
-
         const onConnectPlayerOne: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_CONNECT_PLAYER_ONE)
         onConnectPlayerOne.addData("Test","Test")
-        Broadcast(this._application.WebSocketServer, (ws: WebSocket) => {
-            // if (ws === this.webSocket) {
-            //     return
-            // }
+        Broadcast(this.webSocketServer.WebSocketServer, (ws: WebSocket) => {
             ws.send(onConnectPlayerOne.JSONString)
         })
     }
