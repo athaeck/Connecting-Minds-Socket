@@ -1,6 +1,8 @@
 {
     "extensions": {
-        "mongoDB": []
+        "mongoDB": [
+            "/world/availableItems/set"
+        ]
     },
     "adapter": [
         "mongoDB"
@@ -16,7 +18,8 @@
     ],
     "noSQL": {
         "mongoDB": {
-            "url": "mongodb+srv://nickathaeck:<password>@connecting-minds.vw1wjia.mongodb.net/?retryWrites=true&w=majority"
+            "url": "mongodb+srv://nickathaeck:<password>@connecting-minds.vw1wjia.mongodb.net/?retryWrites=true&w=majority",
+            "useDB": false
         }
     },
     "express": {
