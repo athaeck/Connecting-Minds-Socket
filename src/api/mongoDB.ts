@@ -14,15 +14,15 @@ class MongoDBRouter extends BaseNoSQLExpressRouterExtension {
         super()
         this.path = "/api/mongoDB"
         this.adapter = "mongoDbRouter"
+        this.Log()
+
         this.routeFactory = new ConnectingMindsMongoDBRouteFactory("./mongoDB/")
         this.routeFactory.ConnectRoutes(this)
-        this.Log()
     }
 
     protected async Init(): Promise<void> {
         this.noSQLName = "mongoDB"
         this.noSQLFactory = new ConnectingMindsNoSQLFactory("/noSQL/")
-        super.Init()
     }
 
 

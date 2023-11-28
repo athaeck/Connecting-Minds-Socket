@@ -14,8 +14,6 @@ class MongoDB extends BaseDB {
         if (this.config.useDB === false) {
             return;
         }
-
-        this.Connect();
     }
     public async Connect(): Promise<void> {
         if (this._url.length === 0) {
@@ -25,6 +23,7 @@ class MongoDB extends BaseDB {
         this.client = await MongoClient.connect(this._url)
     }
     public async GetDB<T>(db: string): Promise<T | undefined> {
+        await this.Connect();
         return await this.client?.db(db);
     }
 }

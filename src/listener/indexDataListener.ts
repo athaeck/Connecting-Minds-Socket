@@ -77,7 +77,7 @@ class IndexDataListener extends BaseWebSocketListener {
         this.webSocket.send(responseEvent.JSONString)
     }
     private OnResponse(response: any) {
-        console.log("LiszenerThenResponse", response)
+        console.log("LiszenerThenResponse", response.data)
     }
     private OnCatchError(e: any) {
         console.log("Error", e)
