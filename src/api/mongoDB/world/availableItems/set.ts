@@ -4,8 +4,10 @@ import {
 } from "../../../../../athaeck-express-nosql-extension/athaeck-express-base/base/express";
 import { BaseNoSQLExpressRouteExtension } from "../../../../../athaeck-express-nosql-extension/base";
 import express from "express";
-import mongodb, { Db, Collection } from "mongodb";
-import { GetGUID } from "../../../../../athaeck-websocket-express-base/base/helper";
+import { Db, Collection } from "mongodb";
+import {
+  GetGUID,
+} from "../../../../../athaeck-websocket-express-base/base/helper";
 
 class SetAvailableItemsEndpoint extends BaseNoSQLExpressRouteExtension {
   dbName: string;
@@ -21,39 +23,40 @@ class SetAvailableItemsEndpoint extends BaseNoSQLExpressRouteExtension {
     _res: express.Response,
     _next: express.NextFunction
   ) => {
-    let response:any;
 
-    const documents:any[] = []
+    let response: any;
+    let status: number;
+    const documents: any[] = [];
 
-    for(const e of _req.body){
-        documents.push({
-            id: GetGUID(),
-            ...e
-        })
+    for (const e of _req.body) {
+      documents.push({
+        id: GetGUID(),
+        ...e,
+      });
     }
 
-    console.log(this.db)
+    console.log("documents to index: ",documents);
 
     if (this.db) {
+
       const db: Db = <Db>this.db;
 
       const collection: Collection = db.collection(this._collectionName);
 
-      await collection.deleteMany({})
+      await collection.deleteMany({});
 
-      await collection.insertMany(documents)
+      await collection.insertMany(documents);
 
-      response = "Dokumente eingefügt"
-
-      // if(this.db){
-      //     const collection:mongodb.Collection = this.db
-      // }
-    }else{
-        response = "this.db was undefined"
+      response = "completed";
+      status = 200;
+    } else {
+      response = "this.db ist undefined";
+      status = 500;
     }
 
-    makeResponse(_res, 200, response);
+    makeResponse(_res, status, response);
   };
+
 }
 
 module.exports = SetAvailableItemsEndpoint;

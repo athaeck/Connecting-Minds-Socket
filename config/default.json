@@ -1,7 +1,9 @@
 {
     "extensions": {
         "mongoDB": [
-            "/world/availableItems/set"
+            "/world/availableItems/set",
+            "/world/availablePositions/set",
+            "/world/paths/set"
         ]
     },
     "adapter": [
