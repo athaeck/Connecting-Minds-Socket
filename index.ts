@@ -63,50 +63,23 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
 
 
     Init(webSocket: WebSocket, hooks: WebSocketHooks): void {
-        // const connectingMindsHooks: ConnectingMindsHooks = <ConnectingMindsHooks>hooks
-        // if (this.PlayerOne !== null && this.PlayerTwo !== null) {
-        //     return;
-        // }
-        // const player: Player = {
-        //     hooks: connectingMindsHooks,
-        //     socket: webSocket
-        // }
-        // if (this.PlayerOne === null) {
-        //     this._playerOne = player
-        //     return;
-        // }
-        // if (this.PlayerTwo === null) {
-        //     this._playerTwo = player
-        //     return
-        // }
-        // return connectingMindsHooks
 
-        // TODO: mal noch generalisierne in der Base, ob eine Connection eingeschränkt ist oder nicht und dass das im Child definiert wird
-        // if(this.PlayerOne !== null && this.PlayerTwo !== null){
-        //     webSocket.close(500,"Too many users connected")
-        // }
     }
 
     public TakePlayerOne(webSocket: WebSocket, hooks: ConnectingMindsHooks): void {
-        this._playerOne = {
-            socket: webSocket,
-            hooks
-        }
+
+        this._playerOne = new Player(webSocket, hooks);
     }
+
     public TakePlayerTwo(webSocket: WebSocket, hooks: ConnectingMindsHooks): void {
-        this._playerTwo = {
-            socket: webSocket,
-            hooks
-        }
+        this._playerTwo = new Player(webSocket, hooks)
     }
 
     protected CreateHooks(): WebSocketHooks {
         return new ConnectingMindsHooks()
     }
     Disconnect(webSocket: WebSocket): WebSocketHooks | undefined {
-        if (this.PlayerOne === null && this.PlayerTwo === null) {
-            return undefined
-        }
+
         let player: Player | null = null
         if (this.IsPlayerOne(webSocket)) {
             player = this.PlayerOne
@@ -116,6 +89,7 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
             player = this.PlayerTwo
             this._playerTwo = null
         }
+
         return player?.hooks
     }
     AddRoute(route: BaseExpressRoute): void {

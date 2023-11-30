@@ -21,11 +21,11 @@
     "noSQL": {
         "mongoDB": {
             "url": "mongodb+srv://nickathaeck:<password>@connecting-minds.vw1wjia.mongodb.net/?retryWrites=true&w=majority",
-            "useDB": true
+            "useDB": false
         }
     },
     "express": {
-        "useNetwork": false,
+        "useNetwork": true,
         "port": 3030
     }
 }

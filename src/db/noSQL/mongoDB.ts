@@ -11,11 +11,19 @@ class MongoDB extends BaseDB {
         const url: string = <string>this.config["url"];
         this._url = url.replace("<password>", this.config.password)
 
-        if (this.config.useDB === false) {
+        if (!this.UseDB()) {
             return;
         }
     }
+
+    private UseDB(): boolean {
+        return this.config.useDB
+    }
+
     public async Connect(): Promise<void> {
+        if (!this.UseDB()) {
+            return;
+        }
         if (this._url.length === 0) {
             return
         }
