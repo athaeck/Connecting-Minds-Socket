@@ -17,6 +17,7 @@ class MongoDB extends BaseDB {
     }
 
     private UseDB(): boolean {
+        console.log(this.config.useDB)
         return this.config.useDB
     }
 

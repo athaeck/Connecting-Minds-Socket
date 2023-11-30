@@ -2,6 +2,7 @@
     "extensions": {
         "mongoDB": [
             "/world/availableItems/set",
+            "/world/availableItems/get",
             "/world/availablePositions/set",
             "/world/paths/set"
         ]
@@ -16,12 +17,13 @@
         "disconnectPlayerTwo",
         "placeItemListener",
         "testListener",
-        "indexDataListener"
+        "indexDataListener",
+        "getItemsListener"
     ],
     "noSQL": {
         "mongoDB": {
             "url": "mongodb+srv://nickathaeck:<password>@connecting-minds.vw1wjia.mongodb.net/?retryWrites=true&w=majority",
-            "useDB": false
+            "useDB": true
         }
     },
     "express": {

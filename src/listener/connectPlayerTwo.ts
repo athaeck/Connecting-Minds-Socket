@@ -1,8 +1,8 @@
 import { WebSocket } from "ws";
 import { BaseWebSocketExpressAdoon, BaseWebSocketListener } from "../../athaeck-websocket-express-base/base";
 import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks";
-import { ConnectingMindsEvents, Player } from "../../Connecting-Minds-Data-Types/types";
-import { ConnectingMindsSocket } from "../..";
+import { ConnectingMindsEvents } from "../../Connecting-Minds-Data-Types/types";
+import { ConnectingMindsSocket, Player } from "../..";
 import { Broadcast, ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
 

@@ -35,7 +35,7 @@ class SetAvailableItemsEndpoint extends BaseNoSQLExpressRouteExtension {
       });
     }
 
-    console.log("documents to index: ",documents);
+    console.log("documents to index: ", documents);
 
     if (this.db) {
 

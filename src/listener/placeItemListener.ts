@@ -27,10 +27,6 @@ class PlaceItemListener extends BaseWebSocketListener {
 
         const placeItemEvent: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_PLACE_ITEM)
         placeItemEvent.addData("Item", item)
-
-        // Broadcast(this._application.WebSocketServer, (ws: WebSocket) => {
-        //     ws.send(placeItemEvent.JSONString)
-        // })
     }
 
 }

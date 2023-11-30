@@ -4,10 +4,16 @@ import { BaseWebSocketExpressAdoon } from "./athaeck-websocket-express-base/base
 import { WebSocketHooks } from "./athaeck-websocket-express-base/base/hooks";
 import { ConnectingMindsServerAdapterFactory, ConnectingMindsSocketListenerFactory } from "./src";
 import bodyParser from "body-parser"
-import { Player } from "./Connecting-Minds-Data-Types/types";
 import { ConnectingMindsHooks } from "./src/hooks/connectingMindsHooks";
 
-
+export class Player {
+    public socket: WebSocket;
+    public hooks: ConnectingMindsHooks
+    constructor(socket: WebSocket, hooks: ConnectingMindsHooks) {
+        this.socket = socket
+        this.hooks = hooks
+    }
+}
 
 
 
@@ -67,7 +73,6 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     }
 
     public TakePlayerOne(webSocket: WebSocket, hooks: ConnectingMindsHooks): void {
-
         this._playerOne = new Player(webSocket, hooks);
     }
 
