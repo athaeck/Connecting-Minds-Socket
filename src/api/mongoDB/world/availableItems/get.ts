@@ -5,9 +5,6 @@ import {
 import { BaseNoSQLExpressRouteExtension } from "../../../../../athaeck-express-nosql-extension/base";
 import express from "express";
 import { Db, Collection } from "mongodb";
-import {
-    GetGUID,
-} from "../../../../../athaeck-websocket-express-base/base/helper";
 
 class SetAvailableItemsEndpoint extends BaseNoSQLExpressRouteExtension {
     dbName: string;
