@@ -30,7 +30,7 @@ class SetAvailableItemsEndpoint extends BaseNoSQLExpressRouteExtension {
 
     for (const e of _req.body) {
       documents.push({
-        id: GetGUID(),
+        _id: GetGUID(),
         ...e,
       });
     }

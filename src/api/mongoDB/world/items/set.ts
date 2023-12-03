@@ -1,8 +1,8 @@
 import { BaseNoSQLExpressRouteExtension } from "../../../../../athaeck-express-nosql-extension/base";
 import { ExpressRouteType, makeResponse } from "../../../../../athaeck-websocket-express-base/athaeck-express-base/base/express";
 import express from "express"
-import { GetGUID } from "../../../../../athaeck-websocket-express-base/base/helper";
 import { Db, Collection } from "mongodb";
+import { GetGUID } from "../../../../../athaeck-websocket-express-base/base/helper";
 
 class SetItemsEndpoint extends BaseNoSQLExpressRouteExtension {
     dbName: string;
@@ -25,7 +25,7 @@ class SetItemsEndpoint extends BaseNoSQLExpressRouteExtension {
   
       for (const e of _req.body) {
         documents.push({
-          id: GetGUID(),
+          _id: GetGUID(),
           ...e,
         });
       }

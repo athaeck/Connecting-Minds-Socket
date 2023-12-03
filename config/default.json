@@ -39,7 +39,8 @@
         "placeItemListener",
         "testListener",
         "indexDataListener",
-        "getItemsListener"
+        "getItemsListener",
+        "getPositionsListener"
     ],
     "noSQL": {
         "mongoDB": {
