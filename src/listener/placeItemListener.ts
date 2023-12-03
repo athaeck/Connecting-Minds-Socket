@@ -3,7 +3,7 @@ import { BaseWebSocketExpressAdoon, BaseWebSocketListener } from "../../athaeck-
 import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks";
 import { ConnectingMindsSocket } from "../..";
 import { ConnectingMindsEvents, Item, PlacedItem, Position } from "../../Connecting-Minds-Data-Types/types";
-import { Broadcast, ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
+import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 import axios from "axios";
 
 
@@ -64,12 +64,6 @@ class PlaceItemListener extends BaseWebSocketListener {
     }
 
 }
-// axios.get(`${baseUrl + this._endpoint}`).then(this.OnResponse.bind(this)).catch(this.OnError.bind(this));
-function ConvertItemToPlaceData(itemToPlace:PlacedItem){
-    let itpd: PlacedItem = itemToPlace
-    delete itpd.Item._id
-    delete itpd.Position._id
-    return itpd
-}
+
 
 module.exports = PlaceItemListener
