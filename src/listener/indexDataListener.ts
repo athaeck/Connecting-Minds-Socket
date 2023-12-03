@@ -24,13 +24,13 @@ type IndexTypeMapper = {
 
 const IndexTypeMapper: IndexTypeMapper = {
   ITEMS: {
-    url: "/api/mongoDB/world/availableItems/set",
+    url: "/api/mongoDB/world/items/set",
   },
   PATHS: {
     url: "/api/mongoDB/world/paths/set",
   },
   POSITIONS: {
-    url: "/api/mongoDB/world/availablePositions/set",
+    url: "/api/mongoDB/world/positions/set",
   },
 };
 

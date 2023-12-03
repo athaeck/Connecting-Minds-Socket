@@ -3,8 +3,29 @@
         "mongoDB": [
             "/world/availableItems/set",
             "/world/availableItems/get",
+            "/world/availableItems/add",
+            "/world/availableItems/remove",
             "/world/availablePositions/set",
-            "/world/paths/set"
+            "/world/availablePositions/add",
+            "/world/availablePositions/get",
+            "/world/availablePositions/remove",
+            "/world/paths/set",
+            "/world/paths/add",
+            "/world/paths/get",
+            "/world/paths/remove",
+            "/world/items/set",
+            "/world/items/add",
+            "/world/items/get",
+            "/world/items/remove",
+            "/world/positions/set",
+            "/world/positions/add",
+            "/world/positions/get",
+            "/world/positions/remove",
+            "/world/unlockedPaths/add",
+            "/world/unlockedPaths/get",
+            "/world/unlockedPaths/remove",
+            "/world/unlockedPaths/set"
+
         ]
     },
     "adapter": [

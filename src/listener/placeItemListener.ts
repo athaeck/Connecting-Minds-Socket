@@ -23,10 +23,14 @@ class PlaceItemListener extends BaseWebSocketListener {
 
     }
     protected listener(body: any): void {
-        const item: Item = <Item>body
+        // const item: Item = <Item>body
 
-        const placeItemEvent: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_PLACE_ITEM)
-        placeItemEvent.addData("Item", item)
+        // const placeItemEvent: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_PLACE_ITEM)
+        // placeItemEvent.addData("Item", item)
+
+
+        
+
     }
 
 }
