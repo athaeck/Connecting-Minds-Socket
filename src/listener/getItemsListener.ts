@@ -4,6 +4,7 @@ import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks"
 import { ConnectingMindsEvents } from "../../Connecting-Minds-Data-Types/types";
 import { ConnectingMindsSocket } from "../..";
 import axios from "axios";
+import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 
 
 
@@ -38,8 +39,9 @@ class GetItemsListener extends BaseWebSocketListener {
         console.log(error)
     }
     private OnResponse(response: any) {
-        console.log(response)
-
+        const responseEvent:ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_GET_ITEMS);
+        responseEvent.addData("Items",response.data)
+        this.webSocket.send(responseEvent.JSONString)
     }
 
 }

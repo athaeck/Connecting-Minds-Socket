@@ -23,20 +23,14 @@ class SetAvailableItemsEndpoint extends BaseNoSQLExpressRouteExtension {
         let status: number;
         let documents: any[] = [];
 
-        console.log("1")
-
-        console.log(this.db)
-
         if (this.db) {
 
             const db: Db = <Db>this.db;
 
             const collection: Collection = db.collection(this._collectionName);
 
-
-            console.log(2)
             documents = await collection.find({}).toArray()
-            console.log(3)
+
             console.log("received documents: ", documents)
 
             status = 200;
