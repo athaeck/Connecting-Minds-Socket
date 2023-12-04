@@ -24,8 +24,15 @@
             "/world/unlockedPaths/add",
             "/world/unlockedPaths/get",
             "/world/unlockedPaths/remove",
-            "/world/unlockedPaths/set"
-
+            "/world/unlockedPaths/set",
+            "/world/usedPositions/add",
+            "/world/usedPositions/get",
+            "/world/usedPositions/remove",
+            "/world/usedPositions/set",
+            "/world/placedItems/add",
+            "/world/placedItems/get",
+            "/world/placedItems/remove",
+            "/world/placedItems/set"
         ]
     },
     "adapter": [
