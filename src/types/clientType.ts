@@ -4,5 +4,5 @@ export enum EClientType {
 }
 
 export type ClientType = {
-  type: EClientType;
+  Type: EClientType;
 };

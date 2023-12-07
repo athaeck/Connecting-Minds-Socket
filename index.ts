@@ -64,7 +64,7 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     return true;
   }
 
-  Init(webSocket: WebSocket, hooks: WebSocketHooks): void {}
+  Init(webSocket: WebSocket, hooks: WebSocketHooks): void { }
 
   // public TakePlayerOne(webSocket: WebSocket, hooks: ConnectingMindsHooks): void {
   //     this._playerOne = new Player(webSocket, hooks);
@@ -101,11 +101,11 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     this._sessions.push(session);
   }
 
-  public JoinSession(player:Player,session:Session):void{
-    player.hooks.DispatchHook(ConnectingMindsHooks.JOIN_SESSION,session)
+  public JoinSession(player: Player, session: Session): void {
+    player.hooks.DispatchHook(ConnectingMindsHooks.JOIN_SESSION, session)
     session.ReConnectPlayer(player)
   }
-  
+
 
   public GetSession(id: string): Session | null {
     let session: Session | null = null;
