@@ -40,7 +40,9 @@
     ],
     "listener": [
         "createSession",
-        "connectToSession"
+        "joinSession",
+        "initPlayer",
+        "initWatcher"
     ],
     "noSQL": {
         "mongoDB": {

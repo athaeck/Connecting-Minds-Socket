@@ -26,14 +26,15 @@ class CreateSessionListener
     super(webSocketServer, webSocket, webSocketHooks);
     this._application = webSocketServer;
 
-    this.webSocketHooks.SubscribeHookListener(
-      ConnectingMindsHooks.CREATE_PLAYER,
-      this.OnCreatePlayer.bind(this)
-    );
-    this.webSocketHooks.SubscribeHookListener(
-      ConnectingMindsHooks.CREATE_SESSION,
-      this.OnCreateSession.bind(this)
-    );
+    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_PLAYER,this.OnCreatePlayer.bind(this));
+
+    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_SESSION,this.OnCreateSession.bind(this));
+  }
+  TakeSession(session: Session): void {
+    
+  }
+  RemoveSession(session: Session): void {
+    
   }
 
   private OnCreatePlayer(player: Player): void {
@@ -41,9 +42,7 @@ class CreateSessionListener
     player.TakeListener(this);
   }
   private OnCreateSession(session: Session): void {
-    const onCreateSession: ReceivedEvent = new ReceivedEvent(
-      ConnectingMindsEvents.ON_CREATE_SESSION
-    );
+    const onCreateSession: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_CREATE_SESSION);
     onCreateSession.addData("Session", session.ID);
     this.webSocket.send(onCreateSession.JSONString);
   }
@@ -58,14 +57,14 @@ class CreateSessionListener
       this.OnCreatePlayer.bind(this)
     );
     this.webSocketHooks.UnSubscribeListener(
-        ConnectingMindsHooks.CREATE_SESSION,
-        this.OnCreateSession.bind(this)
-      );
+      ConnectingMindsHooks.CREATE_SESSION,
+      this.OnCreateSession.bind(this)
+    );
   }
   protected listener(body: any): void {
     const clientType: string = body.data;
 
-    if (clientType === EClientType.PLAYER &&  this._player === null) {
+    if (clientType === EClientType.PLAYER && this._player === null) {
       this._application.CreatePlayer(this.webSocket, this.webSocketHooks);
     }
 

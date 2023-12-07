@@ -1,19 +1,31 @@
 import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
 import { WebSocket } from "ws";
 import { PassListener } from "../types/passListener";
+import { Session } from "./session";
 
 export class Watcher {
   public socket: WebSocket;
   public hooks: ConnectingMindsHooks;
 
-  private _listener: PassListener[] = [];
+  protected listener: PassListener[] = [];
 
   constructor(socket: WebSocket, hooks: ConnectingMindsHooks) {
     this.socket = socket;
     this.hooks = hooks;
   }
 
-  public TakeListener(listener: PassListener) {
-    this._listener.push(listener);
+  public TakeListener(listener: PassListener):void {
+    this.listener.push(listener);
+  }
+
+  public TakeSession(session: Session):void{
+    for(const l of this.listener){
+      l.TakeSession(session)
+    }
+  }
+  public RemoveSession(session:Session):void{
+    for(const l of this.listener){
+      l.RemoveSession(session)
+    }
   }
 }
