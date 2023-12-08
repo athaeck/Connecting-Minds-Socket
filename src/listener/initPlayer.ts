@@ -10,9 +10,8 @@ import { SessionHooks } from "../hooks/sessionHooks";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 import {
   ConnectingMindsEvents,
-  Item,
   Path,
-  Position,
+  PlacedItem,
 } from "../../Connecting-Minds-Data-Types/types";
 
 class InitPlayerListener extends BaseWebSocketListener implements PassListener {
@@ -47,22 +46,23 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
   public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {}
   protected listener(body: any): void {
     const containsWatcher: boolean = this._session.Watcher.length > 0;
-    const availableItems: Item[] = this._session.AvailableItems;
     const unlockedPaths: Path[] = this._session.UnlockedPaths;
-    const availablePositions: Position[] = this._session.AvailablePositions;
+    const placedItems: PlacedItem[] = this._session.PlacedItems;
 
     const initPlayer: ReceivedEvent = new ReceivedEvent(
       ConnectingMindsEvents.ON_INIT_PLAYER
     );
     initPlayer.addData("SessionData", {
       ContainsWatcher: containsWatcher,
-      AvailableItems: availableItems,
+      PlacedItems: placedItems,
       UnlockedPaths: unlockedPaths,
-      AvailablePositions: availablePositions,
     });
     this.webSocket.send(initPlayer.JSONString);
   }
   TakeSession(session: Session): void {
+    if (!this._player) {
+      return;
+    }
     session.SessionHooks.SubscribeHookListener(
       SessionHooks.NO_WATCHER,
       this.NoWatcher.bind(this)
@@ -75,6 +75,9 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
     this.webSocket.send(noWatcher.JSONString);
   }
   RemoveSession(session: Session): void {
+    if (!this._player) {
+      return;
+    }
     session.SessionHooks.UnSubscribeListener(
       SessionHooks.NO_WATCHER,
       this.NoWatcher.bind(this)

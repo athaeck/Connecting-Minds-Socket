@@ -1,5 +1,10 @@
 import axios, { AxiosResponse } from "axios";
-import { Item, Path, Position } from "../../Connecting-Minds-Data-Types/types";
+import {
+  Item,
+  Path,
+  PlacedItem,
+  Position,
+} from "../../Connecting-Minds-Data-Types/types";
 import { GetGUID } from "../../athaeck-websocket-express-base/base/helper";
 import { SessionHooks } from "../hooks/sessionHooks";
 import { Player } from "./player";
@@ -27,11 +32,10 @@ export class Session {
   private _sessionHooks: SessionHooks;
 
   private _availableItems: Item[] = [];
-  private _unlockedPaths: Path[] = [];
   private _availablePositions: Position[] = [];
 
-  private _placedItems: Item[] = [];
-  private _usedPositions: Position[] = [];
+  private _unlockedPaths: Path[] = [];
+  private _placedItems: PlacedItem[] = [];
 
   constructor(player: Player) {
     this._sessionHooks = new SessionHooks();
@@ -74,28 +78,30 @@ export class Session {
     }
   }
 
-  public get Player() {
+  public get Player(): Player | null {
     return this._player;
   }
-  public get Watcher() {
+  public get Watcher(): Watcher[] {
     return this._watcher;
   }
-  public get SessionHooks() {
+  public get SessionHooks(): SessionHooks {
     return this._sessionHooks;
   }
-  public get ID() {
+  public get ID(): string {
     return this._id;
   }
 
-  public get AvailableItems() {
+  public get AvailableItems(): Item[] {
     return this._availableItems;
   }
-  public get UnlockedPaths() {
+  public get UnlockedPaths(): Path[] {
     return this._unlockedPaths;
   }
-
-  public get AvailablePositions() {
+  public get AvailablePositions(): Position[] {
     return this._availablePositions;
+  }
+  public get PlacedItems(): PlacedItem[] {
+    return this._placedItems;
   }
 
   public Init(basePath: string): void {

@@ -42,6 +42,9 @@ class CreateSessionListener
     player.TakeListener(this);
   }
   private OnCreateSession(session: Session): void {
+    if(!this._player){
+      return;
+    }
     const onCreateSession: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_CREATE_SESSION);
     onCreateSession.addData("Session", session.ID);
     this.webSocket.send(onCreateSession.JSONString);
