@@ -65,6 +65,10 @@ export class Session {
 
     watcher.TakeSession(this);
 
+    if(this._watcher.length === 0){
+      this._sessionHooks.DispatchHook(SessionHooks.WATCHER_EXISTING,null)
+    }
+
     this._watcher.push(watcher);
     this._sessionHooks.DispatchHook(SessionHooks.CONNECT_WATCHER, watcher);
   }
@@ -74,7 +78,7 @@ export class Session {
     this._watcher = this._watcher.filter((w: Watcher) => w !== watcher);
 
     if (this._watcher.length === 0) {
-      this._sessionHooks.DispatchHook(SessionHooks.NO_WATCHER, null);
+      this._sessionHooks.DispatchHook(SessionHooks.WAIT_FOR_WATCHER, null);
     }
   }
 

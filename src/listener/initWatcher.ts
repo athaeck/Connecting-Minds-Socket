@@ -5,40 +5,101 @@ import { Session } from "../data/session";
 import { PassListener } from "../types/passListener";
 import { ConnectingMindsSocket } from "../..";
 import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
+import { ConnectingMindsEvents, Item, Path, PlacedItem, Position } from "../../Connecting-Minds-Data-Types/types";
+import { Watcher } from "../data/watcher";
+import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
+import { SessionHooks } from "../hooks/sessionHooks";
+import { Player } from "../data/player";
 
+class InitWatcherListener
+  extends BaseWebSocketListener
+  implements PassListener
+{
+  listenerKey: string;
+  private _application: ConnectingMindsSocket;
+  private _watcher: Watcher;
+  private _session: Session| null;
 
+  constructor(
+    webSocketServer: ConnectingMindsSocket,
+    webSocket: WebSocket,
+    webSocketHooks: ConnectingMindsHooks
+  ) {
+    super(webSocketServer, webSocket, webSocketHooks);
+    this._application = webSocketServer;
 
-class InitWatcherListener extends BaseWebSocketListener implements PassListener{
-    listenerKey: string;
-    private _application:ConnectingMindsSocket
+    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_WATCHER,this.OnCreateWatcher.bind(this));
+  }
 
-    constructor(
-        webSocketServer: ConnectingMindsSocket,
-        webSocket: WebSocket,
-        webSocketHooks: ConnectingMindsHooks
-      ) {
-        super(webSocketServer, webSocket, webSocketHooks);
-        this._application = webSocketServer;
-      }
+  private OnCreateWatcher(watcher: Watcher): void {
+    this._watcher = watcher;
+    watcher.TakeListener(this);
+  }
+  protected Init(): void {}
 
-    protected Init(): void {
-        
+  protected SetKey(): void {
+    this.listenerKey = ConnectingMindsEvents.INIT_WATCHER;
+  }
+  public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
+    this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_WATCHER,this.OnCreateWatcher.bind(this));
+  }
+  protected listener(body: any): void {
+
+    if(!this._session){
+        const sessionMissing: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.MISSING)
+        sessionMissing.addData("Message","Es ist ein Netzwerk Fehler aufgetreten.")
+        this.webSocket.send(sessionMissing.JSONString)
+  
+        return;
     }
-    protected SetKey(): void {
-        
+
+    const availableItems:Item[] = this._session.AvailableItems
+    const availablePositions:Position[] = this._session.AvailablePositions
+    const unlockedPaths:Path[] = this._session.UnlockedPaths
+    const placedItems:PlacedItem[] = this._session.PlacedItems
+    const containsPlayer:boolean = this._session.Player != null
+
+    const initWatcher:ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_INIT_WATCHER)
+    initWatcher.addData("SessionData",{
+        ContainsPlayer:containsPlayer,
+        PlacedItems:placedItems,
+        UnlockedPaths:unlockedPaths,
+        AvailablePositions:availablePositions,
+        AvailableItems:availableItems
+    })
+    this.webSocket.send(initWatcher.JSONString)
+
+  }
+  TakeSession(session: Session): void {
+    this._session = session
+
+    if(!this._watcher){
+        return;
     }
-    public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
-        
+    session.SessionHooks.SubscribeHookListener(SessionHooks.CONNECT_PLAYER,this.OnConnectPlayer.bind(this));
+    session.SessionHooks.SubscribeHookListener(SessionHooks.DISCONNECT_PLAYER,this.OnDisconnectPlayer.bind(this))
+  }
+
+  private OnConnectPlayer(player:Player): void{
+    const playerConnected:ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.CONNECT_PLAYER)
+    this.webSocket.send(playerConnected.JSONString)
+  }
+
+  private OnDisconnectPlayer(player:Player): void{
+    const playerDisconnected:ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.DISCONNECT_PLAYER)
+    this.webSocket.send(playerDisconnected.JSONString)
+  }
+
+  RemoveSession(session: Session): void {
+    this._session = null
+
+    if(!this._watcher){
+        return;
     }
-    protected listener(body: any): void {
-        
-    }
-    TakeSession(session: Session): void {
-        
-    }
-    RemoveSession(session: Session): void {
-        
-    }
+
+    session.SessionHooks.UnSubscribeListener(SessionHooks.CONNECT_PLAYER,this.OnConnectPlayer.bind(this));
+    session.SessionHooks.UnSubscribeListener(SessionHooks.DISCONNECT_PLAYER,this.OnDisconnectPlayer.bind(this))
+  }
 }
 
-module.exports = InitWatcherListener
+module.exports = InitWatcherListener;

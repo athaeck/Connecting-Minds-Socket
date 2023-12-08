@@ -18,7 +18,7 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
   listenerKey: string;
   private _application: ConnectingMindsSocket;
   private _player: Player;
-  private _session: Session;
+  private _session: Session | null;
 
   constructor(
     webSocketServer: ConnectingMindsSocket,
@@ -45,6 +45,15 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
   }
   public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {}
   protected listener(body: any): void {
+
+    if(!this._session){
+      const sessionMissing: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.MISSING)
+      sessionMissing.addData("Message","Es ist ein Netzwerk Fehler aufgetreten.")
+      this.webSocket.send(sessionMissing.JSONString)
+
+      return;
+    }
+    
     const containsWatcher: boolean = this._session.Watcher.length > 0;
     const unlockedPaths: Path[] = this._session.UnlockedPaths;
     const placedItems: PlacedItem[] = this._session.PlacedItems;
@@ -60,28 +69,36 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
     this.webSocket.send(initPlayer.JSONString);
   }
   TakeSession(session: Session): void {
+    this._session = session
     if (!this._player) {
       return;
     }
     session.SessionHooks.SubscribeHookListener(
-      SessionHooks.NO_WATCHER,
-      this.NoWatcher.bind(this)
+      SessionHooks.WAIT_FOR_WATCHER,
+      this.OnWaitForWatcher.bind(this)
+    );
+    session.SessionHooks.SubscribeHookListener(
+      SessionHooks.WATCHER_EXISTING,
+      this.OnWatcherExisting.bind(this)
     );
   }
-  private NoWatcher(): void {
-    const noWatcher: ReceivedEvent = new ReceivedEvent(
-      ConnectingMindsEvents.NO_WATCHER
-    );
-    this.webSocket.send(noWatcher.JSONString);
+  private OnWatcherExisting(): void{
+    const watcherExisting:ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.WATCHER_EXISTING)
+    this.webSocket.send(watcherExisting.JSONString)
+  }
+  private OnWaitForWatcher(): void {
+    const waitForWatcher: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.WAIT_FOR_WATCHER);
+    this.webSocket.send(waitForWatcher.JSONString);
   }
   RemoveSession(session: Session): void {
+    this._session = null
+
     if (!this._player) {
       return;
     }
-    session.SessionHooks.UnSubscribeListener(
-      SessionHooks.NO_WATCHER,
-      this.NoWatcher.bind(this)
-    );
+    session.SessionHooks.UnSubscribeListener(SessionHooks.WAIT_FOR_WATCHER,this.OnWaitForWatcher.bind(this));
+
+    session.SessionHooks.UnSubscribeListener(SessionHooks.WATCHER_EXISTING,this.OnWatcherExisting.bind(this));
   }
 }
 
