@@ -10,9 +10,7 @@ import { ConnectingMindsEvents, CreateSession } from "../../Connecting-Minds-Dat
 import { Session } from "../data/session";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 
-class CreateSessionListener
-  extends BaseWebSocketListener
-  implements PassListener {
+class CreateSessionListener extends BaseWebSocketListener implements PassListener {
   listenerKey: string;
   private _application: ConnectingMindsSocket;
   private _player: Player | null = null;

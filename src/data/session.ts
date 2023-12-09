@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import {
   Item,
   Path,
+  PlaceItemProxy,
   PlacedItem,
   Position,
 } from "../../Connecting-Minds-Data-Types/types";
@@ -108,25 +109,24 @@ export class Session {
     return this._placedItems;
   }
 
+  public PlaceItem(item:PlacedItem): void{
+    this._placedItems.push(item)
+    this._availableItems = this._availableItems.filter((aI:Item)=> aI.Name !== item.Item.Name)
+    this._availablePositions = this._availablePositions.filter((aP:Position)=>aP.ID !== item.Position.ID)
+
+    const placedItemProxy:PlaceItemProxy={
+      PlacedItems: this._placedItems,
+      AvailableItems:this._availableItems,
+      AvailablePositions:this._availablePositions
+    }
+
+    this._sessionHooks.DispatchHook(SessionHooks.PLACE_ITEM,placedItemProxy);
+  }
+
   public Init(basePath: string): void {
-    axios
-      .get(
-        basePath + apiEndpoints.baseAvailableItemsEndpoint + apiFunctions.get
-      )
-      .then(this.OnGetAvailableItems.bind(this))
-      .catch(this.OnError.bind(this));
-    axios
-      .get(basePath + apiEndpoints.baseUnlockedPathsEndpoint + apiFunctions.get)
-      .then(this.OnGetUnlockedPaths.bind(this))
-      .catch(this.OnError.bind(this));
-    axios
-      .get(
-        basePath +
-        apiEndpoints.baseAvailablePositionsEndpoint +
-        apiFunctions.get
-      )
-      .then(this.OnGetAvailablePositions.bind(this))
-      .catch(this.OnError.bind(this));
+    axios.get(basePath + apiEndpoints.baseAvailableItemsEndpoint + apiFunctions.get).then(this.OnGetAvailableItems.bind(this)).catch(this.OnError.bind(this));
+    axios.get(basePath + apiEndpoints.baseUnlockedPathsEndpoint + apiFunctions.get).then(this.OnGetUnlockedPaths.bind(this)).catch(this.OnError.bind(this));
+    axios.get(basePath +apiEndpoints.baseAvailablePositionsEndpoint +apiFunctions.get).then(this.OnGetAvailablePositions.bind(this)).catch(this.OnError.bind(this));
   }
   private OnError(error: any): void {
     console.log(error);

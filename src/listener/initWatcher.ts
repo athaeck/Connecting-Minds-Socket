@@ -5,7 +5,7 @@ import { Session } from "../data/session";
 import { PassListener } from "../types/passListener";
 import { ConnectingMindsSocket } from "../..";
 import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
-import { ConnectingMindsEvents, Item, Path, PlacedItem, Position } from "../../Connecting-Minds-Data-Types/types";
+import { ConnectingMindsEvents, Item, Path, PlaceItemProxy, PlacedItem, Position } from "../../Connecting-Minds-Data-Types/types";
 import { Watcher } from "../data/watcher";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 import { SessionHooks } from "../hooks/sessionHooks";
@@ -18,7 +18,7 @@ class InitWatcherListener
   listenerKey: string;
   private _application: ConnectingMindsSocket;
   private _watcher: Watcher | null = null;
-  private _session: Session| null;
+  private _session: Session| null = null;
 
   constructor(
     webSocketServer: ConnectingMindsSocket,
@@ -73,11 +73,24 @@ class InitWatcherListener
   TakeSession(session: Session): void {
     this._session = session
 
+    session.SessionHooks.SubscribeHookListener(SessionHooks.SEND_MESSAGE,this.OnSendMessage.bind(this))
+
     if(!this._watcher){
         return;
     }
     session.SessionHooks.SubscribeHookListener(SessionHooks.CONNECT_PLAYER,this.OnConnectPlayer.bind(this));
     session.SessionHooks.SubscribeHookListener(SessionHooks.DISCONNECT_PLAYER,this.OnDisconnectPlayer.bind(this))
+    session.SessionHooks.SubscribeHookListener(SessionHooks.PLACE_ITEM, this.OnPlaceItem.bind(this))
+  }
+
+  private OnSendMessage(sendMessage:ReceivedEvent): void{
+    this.webSocket.send(sendMessage.JSONString)
+  }
+
+  private OnPlaceItem(proxy:PlaceItemProxy):void{
+    const onPlaceItems:ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_PLACE_ITEM)
+    onPlaceItems.addData("PlacedItemProxy",proxy)
+    this.webSocket.send(onPlaceItems.JSONString)
   }
 
   private OnConnectPlayer(player:Player): void{
@@ -93,10 +106,12 @@ class InitWatcherListener
   RemoveSession(session: Session): void {
     this._session = null
 
+    session.SessionHooks.UnSubscribeListener(SessionHooks.SEND_MESSAGE,this.OnSendMessage.bind(this))
+
     if(!this._watcher){
         return;
     }
-
+    session.SessionHooks.UnSubscribeListener(SessionHooks.PLACE_ITEM, this.OnPlaceItem.bind(this))
     session.SessionHooks.UnSubscribeListener(SessionHooks.CONNECT_PLAYER,this.OnConnectPlayer.bind(this));
     session.SessionHooks.UnSubscribeListener(SessionHooks.DISCONNECT_PLAYER,this.OnDisconnectPlayer.bind(this))
   }

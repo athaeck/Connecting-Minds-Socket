@@ -18,11 +18,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
   private _player: Player | null = null;
   private _watcher: Watcher | null = null
 
-  constructor(
-    webSocketServer: ConnectingMindsSocket,
-    webSocket: WebSocket,
-    webSocketHooks: ConnectingMindsHooks
-  ) {
+  constructor(webSocketServer: ConnectingMindsSocket,webSocket: WebSocket,webSocketHooks: ConnectingMindsHooks) {
     super(webSocketServer, webSocket, webSocketHooks);
     this._application = webSocketServer;
 
@@ -65,7 +61,6 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
   protected listener(body: ConnectToSession): void {
     const sessionID: string = body.SessionID
     const type: string = body.Type
-    console.log(body)
 
     const session: Session | null = this._application.GetSession(sessionID);
 
