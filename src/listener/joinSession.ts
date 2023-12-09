@@ -15,8 +15,8 @@ import { Watcher } from "../data/watcher";
 class JoinSessionListener extends BaseWebSocketListener implements PassListener {
   listenerKey: string;
   private _application: ConnectingMindsSocket;
-  private _player: Player | null;
-  private _watcher: Watcher | null
+  private _player: Player | null = null;
+  private _watcher: Watcher | null = null
 
   constructor(
     webSocketServer: ConnectingMindsSocket,
@@ -58,10 +58,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
     this.listenerKey = ConnectingMindsEvents.CONNECT_TO_SESSION
   }
   public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
-    this.webSocketHooks.UnSubscribeListener(
-      ConnectingMindsHooks.CREATE_PLAYER,
-      this.OnCreatePlayer.bind(this)
-    );
+    this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_PLAYER,this.OnCreatePlayer.bind(this));
     this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.JOIN_SESSION, this.OnJoinSession.bind(this));
     this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_WATCHER, this.OnCreateWatcher.bind(this));
   }

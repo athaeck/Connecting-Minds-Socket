@@ -129,7 +129,7 @@ export class Session {
       .catch(this.OnError.bind(this));
   }
   private OnError(error: any): void {
-    // console.log(error);
+    console.log(error);
   }
   private OnGetAvailableItems(response: AxiosResponse): void {
     if (response.status === 200) {

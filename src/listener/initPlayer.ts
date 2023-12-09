@@ -17,8 +17,8 @@ import {
 class InitPlayerListener extends BaseWebSocketListener implements PassListener {
   listenerKey: string;
   private _application: ConnectingMindsSocket;
-  private _player: Player;
-  private _session: Session | null;
+  private _player: Player | null = null;
+  private _session: Session | null = null;
 
   constructor(
     webSocketServer: ConnectingMindsSocket,

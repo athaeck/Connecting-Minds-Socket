@@ -17,7 +17,7 @@ class InitWatcherListener
 {
   listenerKey: string;
   private _application: ConnectingMindsSocket;
-  private _watcher: Watcher;
+  private _watcher: Watcher | null = null;
   private _session: Session| null;
 
   constructor(
