@@ -15,8 +15,8 @@ import { Watcher } from "../data/watcher";
 class JoinSessionListener extends BaseWebSocketListener implements PassListener {
   listenerKey: string;
   private _application: ConnectingMindsSocket;
-  private _player: Player;
-  private _watcher:Watcher
+  private _player: Player | null;
+  private _watcher: Watcher | null
 
   constructor(
     webSocketServer: ConnectingMindsSocket,
@@ -26,21 +26,29 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
     super(webSocketServer, webSocket, webSocketHooks);
     this._application = webSocketServer;
 
-    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_PLAYER,this.OnCreatePlayer.bind(this));
+    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_PLAYER, this.OnCreatePlayer.bind(this));
 
-    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_WATCHER,this.OnCreateWatcher.bind(this));
+    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_WATCHER, this.OnCreateWatcher.bind(this));
+
+    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.JOIN_SESSION, this.OnJoinSession.bind(this));
   }
   TakeSession(session: Session): void {
-    
+
   }
   RemoveSession(session: Session): void {
-    
+
+  }
+  private OnJoinSession(session: Session): void {
+    const onJoinSession: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_JOIN_SESSION);
+    console.log("Session mit ID " + session.ID, "wurde beigetreten")
+    onJoinSession.addData("Session", session.ID);
+    this.webSocket.send(onJoinSession.JSONString);
   }
   private OnCreatePlayer(player: Player): void {
     this._player = player;
     player.TakeListener(this);
   }
-  private OnCreateWatcher(watcher:Watcher):void{
+  private OnCreateWatcher(watcher: Watcher): void {
     this._watcher = watcher
     watcher.TakeListener(this)
   }
@@ -49,17 +57,18 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
   protected SetKey(): void {
     this.listenerKey = ConnectingMindsEvents.CONNECT_TO_SESSION
   }
-  public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void { 
+  public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
     this.webSocketHooks.UnSubscribeListener(
       ConnectingMindsHooks.CREATE_PLAYER,
       this.OnCreatePlayer.bind(this)
     );
-
-    this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_WATCHER,this.OnCreateWatcher.bind(this));
+    this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.JOIN_SESSION, this.OnJoinSession.bind(this));
+    this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_WATCHER, this.OnCreateWatcher.bind(this));
   }
   protected listener(body: ConnectToSession): void {
     const sessionID: string = body.SessionID
     const type: string = body.Type
+    console.log(body)
 
     const session: Session | null = this._application.GetSession(sessionID);
 
@@ -79,24 +88,24 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
 
         return;
       }
-      if(this._player === null){
-        this._application.CreatePlayer(this.webSocket,this.webSocketHooks)
+      if (this._player === null) {
+        this._application.CreatePlayer(this.webSocket, this.webSocketHooks)
       }
-      this._application.JoinSessionAsPlayer(this._player,session);
+      this._application.JoinSessionAsPlayer(this._player as Player, session);
     }
-    if(type === EClientType.WATCHER){
-      if(this._watcher === null){
-        this._application.CreateWatcher(this.webSocket,this.webSocketHooks)
+    if (type === EClientType.WATCHER) {
+      if (this._watcher === null) {
+        this._application.CreateWatcher(this.webSocket, this.webSocketHooks)
       }
 
-      if(this._application.IsWatcherContaining(this._watcher)){
+      if (this._application.IsWatcherContaining(this._watcher as Watcher)) {
         const isAlreadyInASession: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.WATCHER_IS_CONTAINING)
-        isAlreadyInASession.addData("Message",`Du bist bereits in einer Session`)
+        isAlreadyInASession.addData("Message", `Du bist bereits in einer Session`)
         this.webSocket.send(isAlreadyInASession.JSONString)
         return;
       }
 
-      this._application.JoinSessionAsWatcher(this._watcher,session);
+      this._application.JoinSessionAsWatcher(this._watcher as Watcher, session);
     }
   }
 }

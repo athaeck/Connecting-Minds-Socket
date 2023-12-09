@@ -6,7 +6,7 @@ import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
 import { EClientType } from "../types/clientType";
 import { Player } from "../data/player";
 import { PassListener } from "../types/passListener";
-import { ConnectingMindsEvents } from "../../Connecting-Minds-Data-Types/types";
+import { ConnectingMindsEvents, CreateSession } from "../../Connecting-Minds-Data-Types/types";
 import { Session } from "../data/session";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 
@@ -15,7 +15,7 @@ class CreateSessionListener
   implements PassListener {
   listenerKey: string;
   private _application: ConnectingMindsSocket;
-  private _player: Player;
+  private _player: Player | null = null;
 
   constructor(
     webSocketServer: ConnectingMindsSocket,
@@ -45,6 +45,7 @@ class CreateSessionListener
       return;
     }
     const onCreateSession: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_CREATE_SESSION);
+    console.log("Session mit ID " + session.ID, "wurde erstellt")
     onCreateSession.addData("Session", session.ID);
     this.webSocket.send(onCreateSession.JSONString);
   }
@@ -63,14 +64,12 @@ class CreateSessionListener
       this.OnCreateSession.bind(this)
     );
   }
-  protected listener(body: any): void {
-    const clientType: string = body.data;
-
+  protected listener(body: CreateSession): void {
+    const clientType: string = body.Type;
     if (clientType === EClientType.PLAYER && this._player === null) {
       this._application.CreatePlayer(this.webSocket, this.webSocketHooks);
     }
-
-    this._application.CreateSession(this._player);
+    this._application.CreateSession(this._player as Player);
   }
 }
 

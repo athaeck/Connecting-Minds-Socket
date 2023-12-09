@@ -36,7 +36,7 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     return true;
   }
 
-  Init(webSocket: WebSocket, hooks: WebSocketHooks): void {}
+  Init(webSocket: WebSocket, hooks: WebSocketHooks): void { }
 
   protected CreateHooks(): WebSocketHooks {
     return new ConnectingMindsHooks();
@@ -64,10 +64,7 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     hooks.DispatchHook(ConnectingMindsHooks.CREATE_PLAYER, player);
   }
 
-  public CreateWatcher(
-    webSocket: WebSocket,
-    hooks: ConnectingMindsHooks
-  ): void {
+  public CreateWatcher(webSocket: WebSocket, hooks: ConnectingMindsHooks): void {
     const watcher: Watcher = new Watcher(webSocket, hooks);
     hooks.DispatchHook(ConnectingMindsHooks.CREATE_WATCHER, watcher);
   }

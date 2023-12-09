@@ -65,8 +65,8 @@ export class Session {
 
     watcher.TakeSession(this);
 
-    if(this._watcher.length === 0){
-      this._sessionHooks.DispatchHook(SessionHooks.WATCHER_EXISTING,null)
+    if (this._watcher.length === 0) {
+      this._sessionHooks.DispatchHook(SessionHooks.WATCHER_EXISTING, null)
     }
 
     this._watcher.push(watcher);
@@ -122,14 +122,14 @@ export class Session {
     axios
       .get(
         basePath +
-          apiEndpoints.baseAvailablePositionsEndpoint +
-          apiFunctions.get
+        apiEndpoints.baseAvailablePositionsEndpoint +
+        apiFunctions.get
       )
       .then(this.OnGetAvailablePositions.bind(this))
       .catch(this.OnError.bind(this));
   }
   private OnError(error: any): void {
-    console.log(error);
+    // console.log(error);
   }
   private OnGetAvailableItems(response: AxiosResponse): void {
     if (response.status === 200) {
