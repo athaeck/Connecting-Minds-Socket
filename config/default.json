@@ -42,7 +42,10 @@
         "createSession",
         "joinSession",
         "initPlayer",
-        "initWatcher"
+        "initWatcher",
+        "placeItem",
+        "removeItem",
+        "rotateItem"
     ],
     "noSQL": {
         "mongoDB": {
