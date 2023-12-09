@@ -39,21 +39,21 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
     player.TakeListener(this);
   }
 
-  protected Init(): void {}
+  protected Init(): void { }
   protected SetKey(): void {
     this.listenerKey = ConnectingMindsEvents.INIT_PLAYER;
   }
-  public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {}
+  public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void { }
   protected listener(body: any): void {
 
-    if(!this._session){
+    if (!this._session) {
       const sessionMissing: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.MISSING)
-      sessionMissing.addData("Message","Es ist ein Netzwerk Fehler aufgetreten.")
+      sessionMissing.addData("Message", "Es ist ein Netzwerk Fehler aufgetreten.")
       this.webSocket.send(sessionMissing.JSONString)
 
       return;
     }
-    
+
     const containsWatcher: boolean = this._session.Watcher.length > 0;
     const unlockedPaths: Path[] = this._session.UnlockedPaths;
     const placedItems: PlacedItem[] = this._session.PlacedItems;
@@ -73,17 +73,11 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
     if (!this._player) {
       return;
     }
-    session.SessionHooks.SubscribeHookListener(
-      SessionHooks.WAIT_FOR_WATCHER,
-      this.OnWaitForWatcher.bind(this)
-    );
-    session.SessionHooks.SubscribeHookListener(
-      SessionHooks.WATCHER_EXISTING,
-      this.OnWatcherExisting.bind(this)
-    );
+    session.SessionHooks.SubscribeHookListener(SessionHooks.WAIT_FOR_WATCHER, this.OnWaitForWatcher.bind(this));
+    session.SessionHooks.SubscribeHookListener(SessionHooks.WATCHER_EXISTING, this.OnWatcherExisting.bind(this));
   }
-  private OnWatcherExisting(): void{
-    const watcherExisting:ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.WATCHER_EXISTING)
+  private OnWatcherExisting(): void {
+    const watcherExisting: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.WATCHER_EXISTING)
     this.webSocket.send(watcherExisting.JSONString)
   }
   private OnWaitForWatcher(): void {
@@ -96,9 +90,9 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
     if (!this._player) {
       return;
     }
-    session.SessionHooks.UnSubscribeListener(SessionHooks.WAIT_FOR_WATCHER,this.OnWaitForWatcher.bind(this));
+    session.SessionHooks.UnSubscribeListener(SessionHooks.WAIT_FOR_WATCHER, this.OnWaitForWatcher.bind(this));
 
-    session.SessionHooks.UnSubscribeListener(SessionHooks.WATCHER_EXISTING,this.OnWatcherExisting.bind(this));
+    session.SessionHooks.UnSubscribeListener(SessionHooks.WATCHER_EXISTING, this.OnWatcherExisting.bind(this));
   }
 }
 

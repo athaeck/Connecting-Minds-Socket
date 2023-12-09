@@ -12,8 +12,7 @@ import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper"
 
 class CreateSessionListener
   extends BaseWebSocketListener
-  implements PassListener
-{
+  implements PassListener {
   listenerKey: string;
   private _application: ConnectingMindsSocket;
   private _player: Player;
@@ -26,15 +25,15 @@ class CreateSessionListener
     super(webSocketServer, webSocket, webSocketHooks);
     this._application = webSocketServer;
 
-    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_PLAYER,this.OnCreatePlayer.bind(this));
+    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_PLAYER, this.OnCreatePlayer.bind(this));
 
-    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_SESSION,this.OnCreateSession.bind(this));
+    this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_SESSION, this.OnCreateSession.bind(this));
   }
   TakeSession(session: Session): void {
-    
+
   }
   RemoveSession(session: Session): void {
-    
+
   }
 
   private OnCreatePlayer(player: Player): void {
@@ -42,7 +41,7 @@ class CreateSessionListener
     player.TakeListener(this);
   }
   private OnCreateSession(session: Session): void {
-    if(!this._player){
+    if (!this._player) {
       return;
     }
     const onCreateSession: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_CREATE_SESSION);
@@ -50,7 +49,7 @@ class CreateSessionListener
     this.webSocket.send(onCreateSession.JSONString);
   }
 
-  protected Init(): void {}
+  protected Init(): void { }
   protected SetKey(): void {
     this.listenerKey = ConnectingMindsEvents.CREATE_SESSION;
   }
