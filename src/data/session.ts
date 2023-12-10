@@ -128,7 +128,7 @@ export class Session {
     this._sessionHooks.DispatchHook(SessionHooks.PLACE_ITEM, placedItemProxy);
   }
   public RemoveItem(item: PlacedItem): void {
-    this._placedItems = this._placedItems.filter((pI: PlacedItem) => pI.Item.Name !== item.Item.Name && pI.Position.ID === item.Position.ID)
+    this._placedItems = this._placedItems.filter((pI: PlacedItem) => pI.Item.Name !== item.Item.Name && pI.Position.ID !== item.Position.ID)
     this._availableItems.push(item.Item)
     this._availablePositions.push(item.Position)
 
