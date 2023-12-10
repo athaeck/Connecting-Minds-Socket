@@ -46,17 +46,27 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
 
     for (const s of this._sessions) {
       if (s.Player?.socket === webSocket) {
+        this.PlayerDisconnect(s,s.Player)  
         watcher = s.Player;
-        s.DisconnectPlayer(s.Player);
       }
       for (const w of s.Watcher) {
         if (w.socket === webSocket) {
+          this.WatcherDisconnect(s,w)
           watcher = w;
-          s.DisconnectWatcher(w);
         }
       }
     }
     return watcher?.hooks;
+  }
+  
+  public PlayerDisconnect(session: Session, player: Player): void{
+    player.hooks.DispatchHook(ConnectingMindsHooks.LEAVE_SESSION, session);
+    session.DisconnectPlayer(player);
+  } 
+  
+  public WatcherDisconnect(session: Session, watcher: Watcher): void{
+    watcher.hooks.DispatchHook(ConnectingMindsHooks.LEAVE_SESSION, session);
+    session.DisconnectWatcher(watcher);
   }
 
   public CreatePlayer(webSocket: WebSocket, hooks: ConnectingMindsHooks): void {
