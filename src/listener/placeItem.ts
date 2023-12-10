@@ -9,29 +9,35 @@ import { ConnectingMindsSocket } from "../..";
 import { EmitSessionNetworkError } from "../helper/sessionNetworkError";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 import { SessionHooks } from "../hooks/sessionHooks";
+import { Watcher } from "../data/watcher";
 
 
-class PlaceItemListener extends BaseWebSocketListener implements PassListener{
+class PlaceItemListener extends BaseWebSocketListener implements PassListener {
     listenerKey: string;
     private _session: Session | null = null;
-    private _application:ConnectingMindsSocket
+    private _application: ConnectingMindsSocket
 
-    constructor(webSocketServer: ConnectingMindsSocket,webSocket: WebSocket,webSocketHooks: ConnectingMindsHooks) {
+    constructor(webSocketServer: ConnectingMindsSocket, webSocket: WebSocket, webSocketHooks: ConnectingMindsHooks) {
         super(webSocketServer, webSocket, webSocketHooks);
         this._application = webSocketServer;
+
+        this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.CREATE_WATCHER, this.OnCreateWatcher.bind(this));
+    }
+    private OnCreateWatcher(watcher: Watcher): void {
+        watcher.TakeListener(this)
     }
 
     protected Init(): void {
-        
+
     }
     protected SetKey(): void {
-     this.listenerKey = ConnectingMindsEvents.PLACE_ITEM   
+        this.listenerKey = ConnectingMindsEvents.PLACE_ITEM
     }
     public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
-        
+        this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_WATCHER, this.OnCreateWatcher.bind(this));
     }
     protected listener(body: PlacedItem): void {
-        if(this._session === null){
+        if (this._session === null) {
             EmitSessionNetworkError(this.webSocket)
 
             return
@@ -39,9 +45,9 @@ class PlaceItemListener extends BaseWebSocketListener implements PassListener{
 
         this._session.PlaceItem(body)
 
-        const sendMessage:ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.SEND_MESSAGE)
-        sendMessage.addData("MESSAGE","Gegenstand wurde plaziert.")
-        this._session.SessionHooks.DispatchHook(SessionHooks.SEND_MESSAGE,sendMessage)
+        const sendMessage: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.SEND_MESSAGE)
+        sendMessage.addData("MESSAGE", "Gegenstand wurde plaziert.")
+        this._session.SessionHooks.DispatchHook(SessionHooks.SEND_MESSAGE, sendMessage)
     }
     TakeSession(session: Session): void {
         this._session = session

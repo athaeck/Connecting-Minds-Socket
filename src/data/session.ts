@@ -5,6 +5,10 @@ import {
   PlaceItemProxy,
   PlacedItem,
   Position,
+  RemoveItemProxy,
+  UnlockItemProxy,
+  UnlockPathProxy,
+  UnlockedPath,
 } from "../../Connecting-Minds-Data-Types/types";
 import { GetGUID } from "../../athaeck-websocket-express-base/base/helper";
 import { SessionHooks } from "../hooks/sessionHooks";
@@ -109,24 +113,58 @@ export class Session {
     return this._placedItems;
   }
 
-  public PlaceItem(item:PlacedItem): void{
+  public PlaceItem(item: PlacedItem): void {
     this._placedItems.push(item)
-    this._availableItems = this._availableItems.filter((aI:Item)=> aI.Name !== item.Item.Name)
-    this._availablePositions = this._availablePositions.filter((aP:Position)=>aP.ID !== item.Position.ID)
+    this._availableItems = this._availableItems.filter((aI: Item) => aI.Name !== item.Item.Name)
+    this._availablePositions = this._availablePositions.filter((aP: Position) => aP.ID !== item.Position.ID)
 
-    const placedItemProxy:PlaceItemProxy={
+    const placedItemProxy: PlaceItemProxy = {
       PlacedItems: this._placedItems,
-      AvailableItems:this._availableItems,
-      AvailablePositions:this._availablePositions
+      AvailableItems: this._availableItems,
+      AvailablePositions: this._availablePositions
     }
 
-    this._sessionHooks.DispatchHook(SessionHooks.PLACE_ITEM,placedItemProxy);
+    this._sessionHooks.DispatchHook(SessionHooks.PLACE_ITEM, placedItemProxy);
+  }
+  public RemoveItem(item: PlacedItem): void {
+    this._placedItems = this._placedItems.filter((pI: PlacedItem) => pI.Item.Name !== item.Item.Name && pI.Position.ID === item.Position.ID)
+    this._availableItems.push(item.Item)
+    this._availablePositions.push(item.Position)
+
+    const removeItemProxy: RemoveItemProxy = {
+      PlacedItems: this._placedItems,
+      AvailableItems: this._availableItems,
+      AvailablePositions: this._availablePositions
+    }
+
+    this._sessionHooks.DispatchHook(SessionHooks.REMOVE_ITEM, removeItemProxy)
+  }
+  public UnlockPath(unlockedPath: UnlockedPath): void {
+    this._unlockedPaths.push(unlockedPath.Path)
+    this._availablePositions.push(...unlockedPath.Positions)
+
+    const unlockedPathProxy: UnlockPathProxy = {
+      AvailablePositions: this._availablePositions,
+      UnlockedPaths: this._unlockedPaths
+    }
+
+    this._sessionHooks.DispatchHook(SessionHooks.UNLOCK_PATH, unlockedPathProxy)
+  }
+
+  public UnlockItem(unlockedItem: Item): void {
+    this._availableItems.push(unlockedItem)
+
+    const unlockItemProxy: UnlockItemProxy = {
+      AvaibaleItems: this._availableItems
+    }
+
+    this._sessionHooks.DispatchHook(SessionHooks.UNLOCK_ITEM, unlockItemProxy);
   }
 
   public Init(basePath: string): void {
     axios.get(basePath + apiEndpoints.baseAvailableItemsEndpoint + apiFunctions.get).then(this.OnGetAvailableItems.bind(this)).catch(this.OnError.bind(this));
     axios.get(basePath + apiEndpoints.baseUnlockedPathsEndpoint + apiFunctions.get).then(this.OnGetUnlockedPaths.bind(this)).catch(this.OnError.bind(this));
-    axios.get(basePath +apiEndpoints.baseAvailablePositionsEndpoint +apiFunctions.get).then(this.OnGetAvailablePositions.bind(this)).catch(this.OnError.bind(this));
+    axios.get(basePath + apiEndpoints.baseAvailablePositionsEndpoint + apiFunctions.get).then(this.OnGetAvailablePositions.bind(this)).catch(this.OnError.bind(this));
   }
   private OnError(error: any): void {
     console.log(error);

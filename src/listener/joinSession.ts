@@ -11,14 +11,16 @@ import { EClientType } from "../types/clientType";
 import { Player } from "../data/player";
 import { PassListener } from "../types/passListener";
 import { Watcher } from "../data/watcher";
+import { SessionHooks } from "../hooks/sessionHooks";
 
 class JoinSessionListener extends BaseWebSocketListener implements PassListener {
   listenerKey: string;
   private _application: ConnectingMindsSocket;
   private _player: Player | null = null;
   private _watcher: Watcher | null = null
+  private _session: Session | null;
 
-  constructor(webSocketServer: ConnectingMindsSocket,webSocket: WebSocket,webSocketHooks: ConnectingMindsHooks) {
+  constructor(webSocketServer: ConnectingMindsSocket, webSocket: WebSocket, webSocketHooks: ConnectingMindsHooks) {
     super(webSocketServer, webSocket, webSocketHooks);
     this._application = webSocketServer;
 
@@ -29,10 +31,15 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
     this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.JOIN_SESSION, this.OnJoinSession.bind(this));
   }
   TakeSession(session: Session): void {
-
+    this._session = session
+    this._session.SessionHooks.SubscribeHookListener(SessionHooks.SEND_MESSAGE, this.OnSendMessage.bind(this))
+  }
+  private OnSendMessage(sendMessage: ReceivedEvent): void {
+    this.webSocket.send(sendMessage.JSONString)
   }
   RemoveSession(session: Session): void {
-
+    session.SessionHooks.UnSubscribeListener(SessionHooks.SEND_MESSAGE, this.OnSendMessage.bind(this))
+    this._session = null
   }
   private OnJoinSession(session: Session): void {
     const onJoinSession: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_JOIN_SESSION);
@@ -54,7 +61,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
     this.listenerKey = ConnectingMindsEvents.CONNECT_TO_SESSION
   }
   public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
-    this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_PLAYER,this.OnCreatePlayer.bind(this));
+    this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_PLAYER, this.OnCreatePlayer.bind(this));
     this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.JOIN_SESSION, this.OnJoinSession.bind(this));
     this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_WATCHER, this.OnCreateWatcher.bind(this));
   }

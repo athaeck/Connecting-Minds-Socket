@@ -13,6 +13,8 @@ import {
   Path,
   PlaceItemProxy,
   PlacedItem,
+  RemoveItemProxy,
+  UnlockPathProxy,
 } from "../../Connecting-Minds-Data-Types/types";
 import { EmitSessionNetworkError } from "../helper/sessionNetworkError";
 
@@ -66,24 +68,29 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
   TakeSession(session: Session): void {
     this._session = session
 
-    this._session.SessionHooks.SubscribeHookListener(SessionHooks.SEND_MESSAGE,this.OnSendMessage.bind(this))
-
     if (!this._player) {
       return;
     }
     this._session.SessionHooks.SubscribeHookListener(SessionHooks.WAIT_FOR_WATCHER, this.OnWaitForWatcher.bind(this));
     this._session.SessionHooks.SubscribeHookListener(SessionHooks.WATCHER_EXISTING, this.OnWatcherExisting.bind(this));
     this._session.SessionHooks.SubscribeHookListener(SessionHooks.PLACE_ITEM, this.OnPlaceItem.bind(this))
+    this._session.SessionHooks.SubscribeHookListener(SessionHooks.REMOVE_ITEM, this.OnRemoveItem.bind(this))
+    this._session.SessionHooks.SubscribeHookListener(SessionHooks.UNLOCK_PATH, this.OnUnlockPath.bind(this))
   }
-
-  private OnSendMessage(sendMessage:ReceivedEvent): void{
-    this.webSocket.send(sendMessage.JSONString)
+  private OnRemoveItem(proxy: RemoveItemProxy): void {
+    const onRemoveItem: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_REMOVE_ITEM)
+    onRemoveItem.addData("Items", proxy.PlacedItems)
+    this.webSocket.send(onRemoveItem.JSONString)
   }
-
   private OnPlaceItem(proxy: PlaceItemProxy): void {
-    const onPlaceItem:ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_PLACE_ITEM)
-    onPlaceItem.addData("Items",proxy.PlacedItems)
+    const onPlaceItem: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_PLACE_ITEM)
+    onPlaceItem.addData("Items", proxy.PlacedItems)
     this.webSocket.send(onPlaceItem.JSONString)
+  }
+  private OnUnlockPath(proxy: UnlockPathProxy): void {
+    const onUnlockPath: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_UNLOCK_PATH)
+    onUnlockPath.addData("Paths", proxy.UnlockedPaths)
+    this.webSocket.send(onUnlockPath.JSONString)
   }
   private OnWatcherExisting(): void {
     const watcherExisting: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.WATCHER_EXISTING)
@@ -94,7 +101,6 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
     this.webSocket.send(waitForWatcher.JSONString);
   }
   RemoveSession(session: Session): void {
-    session.SessionHooks.UnSubscribeListener(SessionHooks.SEND_MESSAGE,this.OnSendMessage.bind(this))
     this._session = null
 
     if (!this._player) {
@@ -103,6 +109,8 @@ class InitPlayerListener extends BaseWebSocketListener implements PassListener {
     session.SessionHooks.UnSubscribeListener(SessionHooks.WAIT_FOR_WATCHER, this.OnWaitForWatcher.bind(this));
     session.SessionHooks.UnSubscribeListener(SessionHooks.PLACE_ITEM, this.OnPlaceItem.bind(this))
     session.SessionHooks.UnSubscribeListener(SessionHooks.WATCHER_EXISTING, this.OnWatcherExisting.bind(this));
+    session.SessionHooks.UnSubscribeListener(SessionHooks.REMOVE_ITEM, this.OnRemoveItem.bind(this))
+    session.SessionHooks.SubscribeHookListener(SessionHooks.UNLOCK_PATH, this.OnUnlockPath.bind(this))
   }
 }
 
