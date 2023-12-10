@@ -39,15 +39,16 @@
         "mongoDB"
     ],
     "listener": [
-        "connectPlayerOne",
-        "connectPlayerTwo",
-        "disconnectPlayerOne",
-        "disconnectPlayerTwo",
-        "placeItemListener",
-        "testListener",
-        "indexDataListener",
-        "getItemsListener",
-        "getPositionsListener"
+        "createSession",
+        "joinSession",
+        "initPlayer",
+        "initWatcher",
+        "placeItem",
+        "removeItem",
+        "rotateItem",
+        "unlockItem",
+        "unlockPath",
+        "unlockPosition"
     ],
     "noSQL": {
         "mongoDB": {
@@ -58,5 +59,16 @@
     "express": {
         "useNetwork": true,
         "port": 3030
-    }
+    },
+    "_comment": [
+        "connectPlayerOne",
+        "connectPlayerTwo",
+        "disconnectPlayerOne",
+        "disconnectPlayerTwo",
+        "placeItemListener",
+        "testListener",
+        "indexDataListener",
+        "getItemsListener",
+        "getPositionsListener"
+    ]
 }
