@@ -8,6 +8,7 @@ import {
   RemoveItemProxy,
   UnlockItemProxy,
   UnlockPathProxy,
+  UnlockPositionProxy,
   UnlockedPath,
 } from "../../Connecting-Minds-Data-Types/types";
 import { GetGUID } from "../../athaeck-websocket-express-base/base/helper";
@@ -159,6 +160,15 @@ export class Session {
     }
 
     this._sessionHooks.DispatchHook(SessionHooks.UNLOCK_ITEM, unlockItemProxy);
+  }
+  public UnlockPosition(unlockedPosition: Position): void {
+    this._availablePositions.push(unlockedPosition)
+
+    const unlockPositionProxy: UnlockPositionProxy = {
+      AvailablePositions: this._availablePositions
+    }
+
+    this._sessionHooks.DispatchHook(SessionHooks.UNLOCK_POSITION, unlockPositionProxy)
   }
 
   public Init(basePath: string): void {

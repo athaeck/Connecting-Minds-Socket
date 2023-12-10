@@ -5,7 +5,7 @@ import { Session } from "../data/session";
 import { PassListener } from "../types/passListener";
 import { ConnectingMindsSocket } from "../..";
 import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
-import { ConnectingMindsEvents, Item, Path, PlaceItemProxy, PlacedItem, Position, RemoveItemProxy, UnlockItemProxy, UnlockPathProxy } from "../../Connecting-Minds-Data-Types/types";
+import { ConnectingMindsEvents, Item, Path, PlaceItemProxy, PlacedItem, Position, RemoveItemProxy, UnlockItemProxy, UnlockPathProxy, UnlockPositionProxy } from "../../Connecting-Minds-Data-Types/types";
 import { Watcher } from "../data/watcher";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 import { SessionHooks } from "../hooks/sessionHooks";
@@ -77,6 +77,7 @@ class InitWatcherListener
     this._session.SessionHooks.SubscribeHookListener(SessionHooks.REMOVE_ITEM, this.OnRemoveItem.bind(this))
     this._session.SessionHooks.SubscribeHookListener(SessionHooks.UNLOCK_PATH, this.OnUnlockPath.bind(this))
     this._session.SessionHooks.SubscribeHookListener(SessionHooks.UNLOCK_ITEM, this.OnUnlockItem.bind(this))
+    this._session.SessionHooks.SubscribeHookListener(SessionHooks.UNLOCK_POSITION, this.OnUnlockPosition.bind(this))
   }
 
   private OnUnlockPath(unlockedPath: UnlockPathProxy): void {
@@ -106,6 +107,11 @@ class InitWatcherListener
     unlockItem.addData("UnlockItemProxy", proxy)
     this.webSocket.send(unlockItem.JSONString)
   }
+  private OnUnlockPosition(proxy: UnlockPositionProxy): void {
+    const unlockPosition: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_UNLOCK_POSITION)
+    unlockPosition.addData("UnlockPositionProxy", proxy)
+    this.webSocket.send(unlockPosition.JSONString)
+  }
 
   RemoveSession(session: Session): void {
     this._session = null
@@ -119,6 +125,7 @@ class InitWatcherListener
     session.SessionHooks.UnSubscribeListener(SessionHooks.REMOVE_ITEM, this.OnRemoveItem.bind(this))
     session.SessionHooks.UnSubscribeListener(SessionHooks.UNLOCK_PATH, this.OnUnlockPath.bind(this))
     session.SessionHooks.UnSubscribeListener(SessionHooks.UNLOCK_ITEM, this.OnUnlockItem.bind(this))
+    session.SessionHooks.UnSubscribeListener(SessionHooks.UNLOCK_POSITION, this.OnUnlockPosition.bind(this))
   }
 }
 
