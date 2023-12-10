@@ -14,10 +14,20 @@ import { ConnectingMindsHooks } from "./src/hooks/connectingMindsHooks";
 import { Session } from "./src/data/session";
 import { Player } from "./src/data/player";
 import { Watcher } from "./src/data/watcher";
+import config from "config"
+
+type Timeout = {
+  minutes: number,
+  calculationFactor: number
+}
+const timeout: Timeout = config.get("timeout")
+
+const timeoutInMinutes: number = timeout.minutes * timeout.calculationFactor;
 
 export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
   private _connectingMindsHooks: ConnectingMindsHooks;
   private _sessions: Session[] = [];
+  private _interval: NodeJS.Timeout | null;
 
   constructor(port: number) {
     super(port);
@@ -26,6 +36,30 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     this.initializeMiddleware();
     this.apiFactory = new ConnectingMindsServerAdapterFactory("./api/");
     this.apiFactory.ConnectAdpater(this);
+    this._interval = null
+  }
+
+  private StartInterval(): void {
+    if (this._interval !== null) {
+      return;
+    }
+    this._interval = setInterval(() => {
+      this.FilterSessions();
+    }, timeoutInMinutes)
+  }
+
+  private FilterSessions(): void {
+    this._sessions = this._sessions.filter((s: Session) => s.Player !== null && s.Watcher.length !== 0)
+    if (this._sessions.length === 0) {
+      this.StopInterval()
+    }
+  }
+
+  private StopInterval(): void {
+    if (this._interval !== null) {
+      clearInterval(this._interval)
+      this._interval = null;
+    }
   }
 
   public get ConnectingMindsHooks() {
@@ -84,6 +118,7 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     session.Init(this.ExpressURL);
     player.hooks.DispatchHook(ConnectingMindsHooks.CREATE_SESSION, session);
     this._sessions.push(session);
+    this.StartInterval()
   }
 
   public JoinSessionAsPlayer(player: Player, session: Session): void {

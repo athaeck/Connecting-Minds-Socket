@@ -61,6 +61,10 @@
         "useNetwork": true,
         "port": 3030
     },
+    "timeout":{
+        "minutes":5,
+        "calculationFactor": 60000
+    },
     "_comment": [
         "connectPlayerOne",
         "connectPlayerTwo",
