@@ -48,7 +48,8 @@
         "rotateItem",
         "unlockItem",
         "unlockPath",
-        "unlockPosition"
+        "unlockPosition",
+        "leaveSession"
     ],
     "noSQL": {
         "mongoDB": {
