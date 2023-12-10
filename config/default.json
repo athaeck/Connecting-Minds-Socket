@@ -45,7 +45,10 @@
         "initWatcher",
         "placeItem",
         "removeItem",
-        "rotateItem"
+        "rotateItem",
+        "unlockItem",
+        "unlockPath",
+        "unlockPosition"
     ],
     "noSQL": {
         "mongoDB": {
