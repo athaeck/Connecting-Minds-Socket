@@ -28,7 +28,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
     this.webSocketHooks.SubscribeHookListener(ConnectingMindsHooks.JOIN_SESSION, this.OnJoinSession.bind(this));
 
   }
-  
+
   TakeSession(session: Session): void {
     this._session = session
     this._session.SessionHooks.SubscribeHookListener(SessionHooks.SEND_MESSAGE, this.OnSendMessage.bind(this))

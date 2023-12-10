@@ -80,12 +80,12 @@ class LeaveSessionListener extends BaseWebSocketListener implements PassListener
         if (type === EClientType.WATCHER) {
             let amIWatcher: boolean = false;
 
-            for(const w of this._session.Watcher){
-                if(w === this._watcher){
+            for (const w of this._session.Watcher) {
+                if (w === this._watcher) {
                     amIWatcher = true;
                 }
             }
-            if(!amIWatcher){
+            if (!amIWatcher) {
                 const watcherNotFound: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.WRONG_WATCHER)
                 watcherNotFound.addData("Message", "Du bist nicht als Watcher in der Session angemeldet")
                 this.webSocket.send(watcherNotFound.JSONString)
