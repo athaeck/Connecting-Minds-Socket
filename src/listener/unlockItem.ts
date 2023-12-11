@@ -47,7 +47,7 @@ class UnlockItemListener extends BaseWebSocketListener implements PassListener {
         this._session.UnlockItem(body)
 
         const sendMessage: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.SEND_MESSAGE)
-        sendMessage.addData("MESSAGE", "Gegenstand wurde freigeschalten.")
+        sendMessage.addData("Message", "Gegenstand wurde freigeschalten.")
         this._session.SessionHooks.DispatchHook(SessionHooks.SEND_MESSAGE, sendMessage)
     }
     TakeSession(session: Session): void {

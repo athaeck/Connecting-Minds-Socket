@@ -7,9 +7,9 @@ import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
 import { ConnectingMindsSocket } from "../..";
 import { Watcher } from "../data/watcher";
 import { Player } from "../data/player";
-import { ConnectingMindsEvents, LeaveSession } from "../../Connecting-Minds-Data-Types/types";
+import { ConnectingMindsEvents, EClientType, LeaveSession } from "../../Connecting-Minds-Data-Types/types";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
-import { EClientType } from "../types/clientType";
+
 
 
 class LeaveSessionListener extends BaseWebSocketListener implements PassListener {

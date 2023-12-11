@@ -6,12 +6,12 @@ import { PassListener } from "../types/passListener";
 import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
 import { ConnectingMindsSocket } from "../..";
 import { Player } from "../data/player";
-import { ConnectingMindsEvents } from "../../Connecting-Minds-Data-Types/types";
+import { ConnectingMindsEvents, Position } from "../../Connecting-Minds-Data-Types/types";
 import { EmitSessionNetworkError } from "../helper/sessionNetworkError";
 
 
 
-class UnlockPositionListener extends BaseWebSocketListener implements PassListener{
+class UnlockPositionListener extends BaseWebSocketListener implements PassListener {
     listenerKey: string;
     private _player: Player | null = null;
     private _session: Session | null = null;
@@ -23,7 +23,7 @@ class UnlockPositionListener extends BaseWebSocketListener implements PassListen
     }
 
     protected Init(): void {
-        
+
     }
     protected SetKey(): void {
         this.listenerKey = ConnectingMindsEvents.UNLOCK_POSITION
@@ -31,12 +31,12 @@ class UnlockPositionListener extends BaseWebSocketListener implements PassListen
     public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
         this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_PLAYER, this.OnCreatePlayer.bind(this));
     }
-    private OnCreatePlayer(player: Player): void{
+    private OnCreatePlayer(player: Player): void {
         this._player = player
         this._player.TakeListener(this)
     }
-    protected listener(body: any): void {
-        if(this._session === null){
+    protected listener(body: Position): void {
+        if (this._session === null) {
             EmitSessionNetworkError(this.webSocket)
 
             return;
@@ -49,7 +49,7 @@ class UnlockPositionListener extends BaseWebSocketListener implements PassListen
     RemoveSession(session: Session): void {
         this._session = null;
     }
-    
+
 }
 
 module.exports = UnlockPositionListener

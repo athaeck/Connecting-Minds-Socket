@@ -3,10 +3,10 @@ import { BaseWebSocketListener } from "../../athaeck-websocket-express-base/base
 import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks";
 import { ConnectingMindsSocket } from "../..";
 import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
-import { ConnectToSession, ConnectingMindsEvents } from "../../Connecting-Minds-Data-Types/types";
+import { ConnectToSession, ConnectingMindsEvents, EClientType } from "../../Connecting-Minds-Data-Types/types";
 import { Session } from "../data/session";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
-import { EClientType } from "../types/clientType";
+
 import { Player } from "../data/player";
 import { PassListener } from "../types/passListener";
 import { Watcher } from "../data/watcher";
@@ -63,7 +63,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
   protected Init(): void { }
 
   protected SetKey(): void {
-    this.listenerKey = ConnectingMindsEvents.CONNECT_TO_SESSION
+    this.listenerKey = ConnectingMindsEvents.JOIN_SESSION
   }
 
   public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
