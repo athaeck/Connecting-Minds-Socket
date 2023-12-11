@@ -3,10 +3,10 @@ import { BaseWebSocketListener } from "../../athaeck-websocket-express-base/base
 import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks";
 import { ConnectingMindsSocket } from "../..";
 import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
-import { EClientType } from "../types/clientType";
+
 import { Player } from "../data/player";
 import { PassListener } from "../types/passListener";
-import { ConnectingMindsEvents, CreateSession } from "../../Connecting-Minds-Data-Types/types";
+import { ConnectingMindsEvents, CreateSession, EClientType } from "../../Connecting-Minds-Data-Types/types";
 import { Session } from "../data/session";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 
