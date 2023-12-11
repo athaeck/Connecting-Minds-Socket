@@ -12,7 +12,7 @@ import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper"
 import { SessionHooks } from "../hooks/sessionHooks";
 
 
-class RemoveItemListener extends BaseWebSocketListener implements PassListener{
+class RemoveItemListener extends BaseWebSocketListener implements PassListener {
     listenerKey: string;
     private _session: Session | null = null;
     private _application: ConnectingMindsSocket
@@ -29,7 +29,7 @@ class RemoveItemListener extends BaseWebSocketListener implements PassListener{
     }
 
     protected Init(): void {
-        
+
     }
     protected SetKey(): void {
         this.listenerKey = ConnectingMindsEvents.REMOVE_ITEM
@@ -43,11 +43,11 @@ class RemoveItemListener extends BaseWebSocketListener implements PassListener{
 
             return
         }
-        
+
         this._session.RemoveItem(body)
 
         const sendMessage: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.SEND_MESSAGE)
-        sendMessage.addData("MESSAGE", "Gegenstand wurde entfernt.")
+        sendMessage.addData("Message", "Gegenstand wurde entfernt.")
         this._session.SessionHooks.DispatchHook(SessionHooks.SEND_MESSAGE, sendMessage)
     }
     TakeSession(session: Session): void {

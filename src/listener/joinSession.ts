@@ -63,7 +63,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
   protected Init(): void { }
 
   protected SetKey(): void {
-    this.listenerKey = ConnectingMindsEvents.CONNECT_TO_SESSION
+    this.listenerKey = ConnectingMindsEvents.JOIN_SESSION
   }
 
   public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {

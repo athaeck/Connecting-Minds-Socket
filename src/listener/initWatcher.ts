@@ -52,7 +52,7 @@ class InitWatcherListener
     const availablePositions: Position[] = this._session.AvailablePositions
     const unlockedPaths: Path[] = this._session.UnlockedPaths
     const placedItems: PlacedItem[] = this._session.PlacedItems
-    const containsPlayer: boolean = this._session.Player != null
+    const containsPlayer: boolean = this._session.Player !== null
 
     const initWatcher: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_INIT_WATCHER)
     initWatcher.addData("SessionData", {
