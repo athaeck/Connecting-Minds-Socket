@@ -24,15 +24,20 @@ class SetUsedPositionsEndpoint extends BaseNoSQLExpressRouteExtension {
     const documents: any[] = [];
 
     for (const e of _req.body) {
-      documents.push({
-        _id: GetGUID(),
-        ...e,
-      });
+      if (e.hasOwnProperty("_id")) {
+        e["_id"] = GetGUID()
+        documents.push(e)
+      } else {
+        documents.push({
+          _id: GetGUID(),
+          ...e,
+        });
+      }
     }
 
     console.log("documents to index: ", documents);
 
-    if (this.db) {
+    if (this.db && documents.length > 0) {
 
       const db: Db = <Db>this.db;
 
@@ -47,6 +52,10 @@ class SetUsedPositionsEndpoint extends BaseNoSQLExpressRouteExtension {
     } else {
       response = "this.db ist undefined";
       status = 500;
+    }
+    if (documents.length === 0) {
+      response = "completed";
+      status = 200;
     }
 
     makeResponse(_res, status, response);
