@@ -1,7 +1,7 @@
 import { BaseNoSQLExpressRouteExtension } from "../../../../../athaeck-express-nosql-extension/base";
 import { ExpressRouteType, makeResponse } from "../../../../../athaeck-websocket-express-base/athaeck-express-base/base/express";
 import { Request, Response, NextFunction } from "express"
-import { Db, Collection } from "mongodb";
+import { Db, Collection, ObjectId } from "mongodb";
 
 class AddPlaceItemEndpoint extends BaseNoSQLExpressRouteExtension {
   dbName: string;
@@ -26,7 +26,7 @@ class AddPlaceItemEndpoint extends BaseNoSQLExpressRouteExtension {
 
         const collection: Collection = db.collection(this._collectionName);
 
-        await collection.insertOne({ _id: positionDataId })
+        await collection.insertOne({ _id: new ObjectId(positionDataId) })
 
         response = "completed";
       } else {
