@@ -3,7 +3,7 @@ import { BaseWebSocketListener } from "../../athaeck-websocket-express-base/base
 import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks";
 import { Session } from "../data/session";
 import { PassListener } from "../types/passListener";
-import { ConnectingMindsSocket } from "../..";
+import { ConnectingMindsSocket } from "../../index";
 import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
 import { Player } from "../data/player";
 import { SessionHooks } from "../hooks/sessionHooks";

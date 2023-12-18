@@ -2,7 +2,7 @@ import { WebSocket } from "ws";
 import { BaseWebSocketExpressAdoon, BaseWebSocketListener, } from "../../athaeck-websocket-express-base/base";
 import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks";
 import { ConnectingMindsEvents, FilesToIndex, Item, Path, Position, } from "../../Connecting-Minds-Data-Types/types";
-import { ConnectingMindsSocket } from "../..";
+import { ConnectingMindsSocket } from "../../index";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";
 import axios from "axios";
 

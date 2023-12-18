@@ -10,11 +10,12 @@ import {
   ConnectingMindsSocketListenerFactory,
 } from "./src";
 import bodyParser from "body-parser";
-import { ConnectingMindsHooks } from "./src/hooks/connectingMindsHooks";
 import { Session } from "./src/data/session";
 import { Player } from "./src/data/player";
 import { Watcher } from "./src/data/watcher";
 import config from "config"
+import { ConnectingMindsHooks } from "./src/hooks/connectingMindsHooks";
+
 
 type Timeout = {
   minutes: number,
@@ -62,7 +63,7 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     }
   }
 
-  public get ConnectingMindsHooks() {
+  public get ConnectingMindsHooks(): ConnectingMindsHooks {
     return this._connectingMindsHooks;
   }
 
