@@ -14,7 +14,7 @@ import { Session } from "./src/data/session";
 import { Player } from "./src/data/player";
 import { Watcher } from "./src/data/watcher";
 import config from "config"
-import { ConnectingMindsHooks } from "./src/hooks/connectingMindsHooks";
+import { ConnectingMindsHooks } from "./src/hooks/connectingMindsHook";
 
 
 type Timeout = {

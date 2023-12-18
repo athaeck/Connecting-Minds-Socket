@@ -2,7 +2,7 @@ import { WebSocket } from "ws";
 import { BaseWebSocketListener } from "../../athaeck-websocket-express-base/base";
 import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks";
 import { ConnectingMindsSocket } from "../../index";
-import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
+import { ConnectingMindsHooks } from "../hooks/connectingMindsHook";
 
 import { Player } from "../data/player";
 import { PassListener } from "../types/passListener";

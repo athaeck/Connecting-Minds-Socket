@@ -4,7 +4,7 @@ import { WebSocketHooks } from "../../athaeck-websocket-express-base/base/hooks"
 import { Session } from "../data/session";
 import { PassListener } from "../types/passListener";
 import { ConnectingMindsEvents, PlacedItem } from "../../Connecting-Minds-Data-Types/types";
-import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
+import { ConnectingMindsHooks } from "../hooks/connectingMindsHook";
 import { ConnectingMindsSocket } from "../../index";
 import { EmitSessionNetworkError } from "../helper/sessionNetworkError";
 import { ReceivedEvent } from "../../athaeck-websocket-express-base/base/helper";

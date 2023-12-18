@@ -1,4 +1,4 @@
-import { ConnectingMindsHooks } from "../hooks/connectingMindsHooks";
+import { ConnectingMindsHooks } from "../hooks/connectingMindsHook";
 import { WebSocket } from "ws";
 import { PassListener } from "../types/passListener";
 import { Session } from "./session";
