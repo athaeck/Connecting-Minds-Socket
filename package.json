@@ -13,7 +13,8 @@
     "build:dev": "tsc --watch --preserveWatchOutput",
     "dev": "concurrently \"npm:build:dev\" \"npm:start:dev\"",
     "start": "node dist/index.js",
-    "heroku-postbuild":"tsc --preserveWatchOutput"
+    "heroku-postbuild":"npm run build",
+    "build":"tsc --preserveWatchOutput"
   },
   "author": "Nick Häcker",
   "license": "ISC",
