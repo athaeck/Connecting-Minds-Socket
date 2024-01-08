@@ -54,7 +54,7 @@
     ],
     "noSQL": {
         "mongoDB": {
-            "url": "mongodb+srv://nickathaeck:<password>@connecting-minds.vw1wjia.mongodb.net/?retryWrites=true&w=majority",
+            "url": "mongodb://localhost:27017/",
             "useDB": true
         }
     },
