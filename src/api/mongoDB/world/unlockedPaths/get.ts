@@ -5,11 +5,11 @@ import { Db, Collection } from "mongodb";
 
 class GetUnlockedPositionsEndpoint extends BaseNoSQLExpressRouteExtension{
     dbName: string;
-    private _collectionName: string = "UnlockedPositions";
+    private _collectionName: string = "unlockedPositions";
   
     constructor() {
       super("/world/unlockedPaths/get", ExpressRouteType.GET);
-      this.dbName = "World";
+      this.dbName = "world";
     }
     handleRequest = async (
       _req: Request,

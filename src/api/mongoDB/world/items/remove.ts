@@ -4,11 +4,11 @@ import { ExpressRouteType } from "../../../../../athaeck-websocket-express-base/
 
 class RemoveItemEndpoint extends BaseNoSQLExpressRouteExtension{
     dbName: string;
-    private _collectionName: string = "Items";
+    private _collectionName: string = "items";
   
     constructor() {
       super("/world/items/del", ExpressRouteType.DELETE);
-      this.dbName = "World";
+      this.dbName = "world";
     }
     
 }

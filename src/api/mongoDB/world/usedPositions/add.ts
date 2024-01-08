@@ -5,11 +5,11 @@ import { Db, Collection, ObjectId } from "mongodb";
 
 class AddUsedPositionEndpoint extends BaseNoSQLExpressRouteExtension {
   dbName: string;
-  private _collectionName: string = "UsedPositions";
+  private _collectionName: string = "usedPositions";
 
   constructor() {
     super("/world/usedPositions/add", ExpressRouteType.POST);
-    this.dbName = "World";
+    this.dbName = "world";
   }
 
   handleRequest = async (

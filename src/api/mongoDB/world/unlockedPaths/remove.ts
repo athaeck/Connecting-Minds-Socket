@@ -4,11 +4,11 @@ import { ExpressRouteType } from "../../../../../athaeck-websocket-express-base/
 
 class RemoveUnlockedPositionEndpoint extends BaseNoSQLExpressRouteExtension{
     dbName: string;
-    private _collectionName: string = "UnlockedPositions";
+    private _collectionName: string = "unlockedPositions";
   
     constructor() {
       super("/world/unlockedPaths/del", ExpressRouteType.DELETE);
-      this.dbName = "World";
+      this.dbName = "world";
     }
     
 }

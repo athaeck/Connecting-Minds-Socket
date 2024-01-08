@@ -4,11 +4,11 @@ import { ExpressRouteType } from "../../../../../athaeck-websocket-express-base/
 
 class AddPositionEndpoint extends BaseNoSQLExpressRouteExtension{
     dbName: string;
-    private _collectionName: string = "Positions";
+    private _collectionName: string = "positions";
   
     constructor() {
       super("/world/positions/add", ExpressRouteType.POST);
-      this.dbName = "World";
+      this.dbName = "world";
     }
     
 }

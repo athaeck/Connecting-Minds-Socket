@@ -11,11 +11,11 @@ import {
 
 class SetAvailableItemsEndpoint extends BaseNoSQLExpressRouteExtension {
   dbName: string;
-  private _collectionName: string = "AvailableItems";
+  private _collectionName: string = "availableItems";
 
   constructor() {
     super("/world/availableItems/set", ExpressRouteType.POST);
-    this.dbName = "World";
+    this.dbName = "world";
   }
 
   handleRequest = async (

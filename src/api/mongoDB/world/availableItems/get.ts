@@ -8,11 +8,11 @@ import { Db, Collection } from "mongodb";
 
 class SetAvailableItemsEndpoint extends BaseNoSQLExpressRouteExtension {
     dbName: string;
-    private _collectionName: string = "AvailableItems";
+    private _collectionName: string = "availableItems";
 
     constructor() {
         super("/world/availableItems/get", ExpressRouteType.GET);
-        this.dbName = "World";
+        this.dbName = "world";
     }
 
     handleRequest = async (

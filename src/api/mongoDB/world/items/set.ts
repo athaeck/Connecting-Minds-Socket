@@ -6,11 +6,11 @@ import { GetGUID } from "../../../../../athaeck-websocket-express-base/base/help
 
 class SetItemsEndpoint extends BaseNoSQLExpressRouteExtension {
   dbName: string;
-  private _collectionName: string = "Items";
+  private _collectionName: string = "items";
 
   constructor() {
     super("/world/items/set", ExpressRouteType.POST);
-    this.dbName = "World";
+    this.dbName = "world";
   }
 
   handleRequest = async (

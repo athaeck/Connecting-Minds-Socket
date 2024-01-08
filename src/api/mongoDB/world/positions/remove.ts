@@ -5,11 +5,11 @@ import { Db, Collection } from "mongodb";
 
 class RemovePositionEndpoint extends BaseNoSQLExpressRouteExtension{
     dbName: string;
-    private _collectionName: string = "Positions";
+    private _collectionName: string = "positions";
   
     constructor() {
       super("/world/positions/del", ExpressRouteType.DELETE);
-      this.dbName = "World";
+      this.dbName = "world";
     }
     handleRequest = async (
       _req: Request,
