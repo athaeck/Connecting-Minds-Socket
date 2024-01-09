@@ -35,12 +35,13 @@ class UnlockPositionListener extends BaseWebSocketListener implements PassListen
         this._player = player
         this._player.TakeListener(this)
     }
-    protected listener(body: Position): void {
+    protected listener(body: any): void {
         if (this._session === null) {
             EmitSessionNetworkError(this.webSocket)
 
             return;
         }
+        const position: Position = body.Position
         this._session.UnlockPosition(body)
     }
     TakeSession(session: Session): void {

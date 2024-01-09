@@ -59,7 +59,7 @@
         }
     },
     "express": {
-        "useNetwork": false,
+        "useNetwork": true,
         "port": 3030
     },
     "timeout": {

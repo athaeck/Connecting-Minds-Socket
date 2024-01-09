@@ -37,13 +37,14 @@ class UnlockPathListener extends BaseWebSocketListener implements PassListener {
     public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
         this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_PLAYER, this.OnCreatePlayer.bind(this));
     }
-    protected listener(body: UnlockedPath): void {
+    protected listener(body: any): void {
         if (this._session === null) {
             EmitSessionNetworkError(this.webSocket)
 
             return;
         }
-        this._session.UnlockPath(body)
+        const unlockedPath: UnlockedPath = body.UnlockedPath
+        this._session.UnlockPath(unlockedPath)
         
     }
     TakeSession(session: Session): void {

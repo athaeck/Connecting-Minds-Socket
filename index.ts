@@ -44,20 +44,28 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
     if (this._interval !== null) {
       return;
     }
+    console.log("Starte mit Bereiningungsinterval")
+    console.log(this._sessions)
     this._interval = setInterval(() => {
       this.FilterSessions();
     }, timeoutInMinutes)
   }
 
   private FilterSessions(): void {
+    console.log("Filtere Sessions")
+    console.log(this._sessions)
     this._sessions = this._sessions.filter((s: Session) => s.Player !== null && s.Watcher.length !== 0)
+    console.log("Resultat")
+    console.log(this._sessions)
     if (this._sessions.length === 0) {
       this.StopInterval()
     }
+
   }
 
   private StopInterval(): void {
     if (this._interval !== null) {
+      console.log("Beende Interval")
       clearInterval(this._interval)
       this._interval = null;
     }

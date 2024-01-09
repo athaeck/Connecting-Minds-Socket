@@ -37,14 +37,14 @@ class RemoveItemListener extends BaseWebSocketListener implements PassListener {
     public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
         this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_WATCHER, this.OnCreateWatcher.bind(this));
     }
-    protected listener(body: PlacedItem): void {
+    protected listener(body: any): void {
         if (this._session === null) {
             EmitSessionNetworkError(this.webSocket)
 
             return
         }
-
-        this._session.RemoveItem(body)
+        const removedItem:PlacedItem = body.PlacedItem
+        this._session.RemoveItem(removedItem)
 
         const sendMessage: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.SEND_MESSAGE)
         sendMessage.addData("Message", "Gegenstand wurde entfernt.")

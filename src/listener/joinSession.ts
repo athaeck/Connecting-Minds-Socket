@@ -73,6 +73,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
   }
 
   protected listener(body: ConnectToSession): void {
+   
     const sessionID: string = body.SessionID
     const type: string = body.Type
 
@@ -80,6 +81,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
 
     if (session === null) {
       const sessionNotFound: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.SESSION_NOT_FOUND)
+      console.log(`Session ${sessionID} konnte nicht gefunden werden.`)
       sessionNotFound.addData("Messsage", `Session ${sessionID} konnte nicht gefunden werden.`)
       this.webSocket.send(sessionNotFound.JSONString)
 
@@ -89,6 +91,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
     if (type === EClientType.PLAYER) {
       if (session.Player !== null) {
         const sessionIsOcupied: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.SESSION_IS_OCCUPIED)
+        console.log(`Session ${sessionID} ist bereits mit einem Spieler belegt.`)
         sessionIsOcupied.addData("Message", `Session ${sessionID} ist bereits mit einem Spieler belegt.`)
         this.webSocket.send(sessionIsOcupied.JSONString)
 
@@ -110,7 +113,7 @@ class JoinSessionListener extends BaseWebSocketListener implements PassListener 
         this.webSocket.send(isAlreadyInASession.JSONString)
         return;
       }
-
+      console.log(session)
       this._application.JoinSessionAsWatcher(this._watcher as Watcher, session);
     }
   }

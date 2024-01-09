@@ -83,6 +83,7 @@ class InitWatcherListener
   private OnUnlockPath(unlockedPath: UnlockPathProxy): void {
     const onUnlockPath: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_UNLOCK_PATH)
     onUnlockPath.addData("UnlockPathProxy", unlockedPath);
+    this.webSocket.send(onUnlockPath.JSONString)
   }
   private OnPlaceItem(proxy: PlaceItemProxy): void {
     const onPlaceItems: ReceivedEvent = new ReceivedEvent(ConnectingMindsEvents.ON_PLACE_ITEM)
