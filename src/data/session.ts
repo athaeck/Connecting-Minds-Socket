@@ -187,6 +187,11 @@ export class Session {
     this._sessionHooks.DispatchHook(SessionHooks.UNLOCK_ITEM, unlockItemProxy);
   }
   public UnlockPosition(unlockedPosition: Position): void {
+
+    if (this._placedItems.find((pi: PlacedItem) => pi.Position.ID === unlockedPosition.ID) || this._availablePositions.includes(unlockedPosition)) {
+      return;
+    }
+
     this._availablePositions.push(unlockedPosition)
 
     const unlockPositionProxy: UnlockPositionProxy = {
