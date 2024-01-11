@@ -14,4 +14,5 @@ export class SessionHooks extends WebSocketHooks {
     public static readonly UNLOCK_PATH="UNLOCK_PATH"
     public static readonly UNLOCK_POSITION="UNLOCK_POSITION"
     public static readonly UNLOCK_ITEM="UNLOCK_ITEM"
+    public static readonly REMOVE_POSITION="REMOVE_POSITION"
 }

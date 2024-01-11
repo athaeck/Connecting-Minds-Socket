@@ -11,7 +11,7 @@ import { EmitSessionNetworkError } from "../helper/sessionNetworkError";
 
 
 
-class UnlockPositionListener extends BaseWebSocketListener implements PassListener {
+class RemovePositionListener extends BaseWebSocketListener implements PassListener {
     listenerKey: string;
     private _player: Player | null = null;
     private _session: Session | null = null;
@@ -42,7 +42,7 @@ class UnlockPositionListener extends BaseWebSocketListener implements PassListen
             return;
         }
         const position: Position = body.Position
-        this._session.UnlockPosition(position)
+        this._session.RemovePosition(position)
     }
     TakeSession(session: Session): void {
         this._session = session
@@ -53,4 +53,4 @@ class UnlockPositionListener extends BaseWebSocketListener implements PassListen
 
 }
 
-module.exports = UnlockPositionListener
+module.exports = RemovePositionListener
