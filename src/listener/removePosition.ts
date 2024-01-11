@@ -26,7 +26,7 @@ class RemovePositionListener extends BaseWebSocketListener implements PassListen
 
     }
     protected SetKey(): void {
-        this.listenerKey = ConnectingMindsEvents.UNLOCK_POSITION
+        this.listenerKey = ConnectingMindsEvents.REMOVE_POSITION
     }
     public OnDisconnection(webSocket: WebSocket, hooks: WebSocketHooks): void {
         this.webSocketHooks.UnSubscribeListener(ConnectingMindsHooks.CREATE_PLAYER, this.OnCreatePlayer.bind(this));
