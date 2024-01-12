@@ -126,11 +126,11 @@ export class Session {
       AvailablePositions: this._availablePositions
     }
 
-    console.log("Session Data Update")
-    console.log(this.AvailableItems)
-    console.log(this.UnlockedPaths)
-    console.log(this.AvailablePositions)
-    console.log(this.PlacedItems)
+    // console.log("Session Data Update")
+    // console.log(this.AvailableItems)
+    // console.log(this.UnlockedPaths)
+    // console.log(this.AvailablePositions)
+    // console.log(this.PlacedItems)
 
     this._sessionHooks.DispatchHook(SessionHooks.PLACE_ITEM, placedItemProxy);
   }
@@ -145,11 +145,11 @@ export class Session {
       AvailablePositions: this._availablePositions
     }
 
-    console.log("Session Data Update")
-    console.log(this.AvailableItems)
-    console.log(this.UnlockedPaths)
-    console.log(this.AvailablePositions)
-    console.log(this.PlacedItems)
+    // console.log("Session Data Update")
+    // console.log(this.AvailableItems)
+    // console.log(this.UnlockedPaths)
+    // console.log(this.AvailablePositions)
+    // console.log(this.PlacedItems)
 
     this._sessionHooks.DispatchHook(SessionHooks.REMOVE_ITEM, removeItemProxy)
   }
@@ -162,11 +162,11 @@ export class Session {
       UnlockedPaths: this._unlockedPaths
     }
 
-    console.log("Session Data Update")
-    console.log(this.AvailableItems)
-    console.log(this.UnlockedPaths)
-    console.log(this.AvailablePositions)
-    console.log(this.PlacedItems)
+    // console.log("Session Data Update")
+    // console.log(this.AvailableItems)
+    // console.log(this.UnlockedPaths)
+    // console.log(this.AvailablePositions)
+    // console.log(this.PlacedItems)
 
     this._sessionHooks.DispatchHook(SessionHooks.UNLOCK_PATH, unlockedPathProxy)
   }
@@ -178,11 +178,11 @@ export class Session {
       AvaibaleItems: this._availableItems
     }
 
-    console.log("Session Data Update")
-    console.log(this.AvailableItems)
-    console.log(this.UnlockedPaths)
-    console.log(this.AvailablePositions)
-    console.log(this.PlacedItems)
+    // console.log("Session Data Update")
+    // console.log(this.AvailableItems)
+    // console.log(this.UnlockedPaths)
+    // console.log(this.AvailablePositions)
+    // console.log(this.PlacedItems)
 
     this._sessionHooks.DispatchHook(SessionHooks.UNLOCK_ITEM, unlockItemProxy);
   }
@@ -198,18 +198,20 @@ export class Session {
       AvailablePositions: this._availablePositions
     }
 
-    console.log("Session Data Update")
-    console.log(this.AvailableItems)
-    console.log(this.UnlockedPaths)
-    console.log(this.AvailablePositions)
-    console.log(this.PlacedItems)
+    // console.log("Session Data Update")
+    // console.log(this.AvailableItems)
+    // console.log(this.UnlockedPaths)
+    // console.log(this.AvailablePositions)
+    // console.log(this.PlacedItems)
 
     this._sessionHooks.DispatchHook(SessionHooks.UNLOCK_POSITION, unlockPositionProxy)
   }
   public RemovePosition(removedPosition: Position): void {
     const placedItem: PlacedItem | undefined = this._placedItems.find((pI: PlacedItem) => pI.Position.ID === removedPosition.ID);
 
-    if (placedItem) {
+    console.log(placedItem)
+
+    if (placedItem !== undefined) {
       this.RemoveItem(placedItem)
     }
     this._availablePositions = this._availablePositions.filter((aP: Position) => removedPosition.ID !== aP.ID)
@@ -218,11 +220,11 @@ export class Session {
       AvailablePositions: this._availablePositions
     }
 
-    console.log("Session Data Update")
-    console.log(this.AvailableItems)
-    console.log(this.UnlockedPaths)
-    console.log(this.AvailablePositions)
-    console.log(this.PlacedItems)
+    // console.log("Session Data Update")
+    // console.log(this.AvailableItems)
+    // console.log(this.UnlockedPaths)
+    // console.log(this.AvailablePositions)
+    // console.log(this.PlacedItems)
 
     this._sessionHooks.DispatchHook(SessionHooks.REMOVE_POSITION, removePositionProxy)
   }

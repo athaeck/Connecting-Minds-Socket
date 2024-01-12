@@ -42,6 +42,7 @@ class RemovePositionListener extends BaseWebSocketListener implements PassListen
             return;
         }
         const position: Position = body.Position
+        console.log(position)
         this._session.RemovePosition(position)
     }
     TakeSession(session: Session): void {
