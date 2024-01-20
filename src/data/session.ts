@@ -117,7 +117,7 @@ export class Session {
 
   public PlaceItem(item: PlacedItem): void {
     this._placedItems.push(item)
-    this._availableItems = this._availableItems.filter((aI: Item) => aI.Name !== item.Item.Name)
+    this._availableItems = this._availableItems.filter((aI: Item) => aI.ID !== item.Item.ID)
     this._availablePositions = this._availablePositions.filter((aP: Position) => aP.ID !== item.Position.ID)
 
     const placedItemProxy: PlaceItemProxy = {
@@ -135,7 +135,7 @@ export class Session {
     this._sessionHooks.DispatchHook(SessionHooks.PLACE_ITEM, placedItemProxy);
   }
   public RemoveItem(item: PlacedItem): void {
-    this._placedItems = this._placedItems.filter((pI: PlacedItem) => pI.Item.Name !== item.Item.Name && pI.Position.ID !== item.Position.ID)
+    this._placedItems = this._placedItems.filter((pI: PlacedItem) => pI.Item.ID !== item.Item.ID && pI.Position.ID !== item.Position.ID)
     this._availableItems.push(item.Item)
     this._availablePositions.push(item.Position)
 
