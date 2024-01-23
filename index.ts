@@ -54,7 +54,7 @@ export class ConnectingMindsSocket extends BaseWebSocketExpressAdoon {
   private FilterSessions(): void {
     console.log("Filtere Sessions")
     console.log(this._sessions)
-    this._sessions = this._sessions.filter((s: Session) => s.Player !== null && s.Watcher.length !== 0)
+    this._sessions = this._sessions.filter((s: Session) => s.Player !== null || s.Watcher.length !== 0)
     console.log("Resultat")
     console.log(this._sessions)
     if (this._sessions.length === 0) {
